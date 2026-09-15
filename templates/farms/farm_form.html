@@ -1,0 +1,1957 @@
+{% extends "system_base.html" %}
+
+{% block title %}
+{{ page_title }} | AquaMap Iloilo
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+/>
+
+<style>
+
+    /* =========================================================
+       AQUAMAP FARM FORM
+       ========================================================= */
+
+    .farm-form-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 38px 30px 56px;
+    }
+
+
+    /* =========================================================
+       PAGE HEADER
+       ========================================================= */
+
+    .farm-form-header {
+        margin-bottom: 25px;
+    }
+
+    .farm-form-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+
+        margin-bottom: 12px;
+        padding: 7px 12px;
+
+        border: 1px solid rgba(22, 138, 138, 0.13);
+        border-radius: 999px;
+
+        background: rgba(230, 244, 247, 0.72);
+
+        color: #0F5B66;
+
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .farm-form-eyebrow-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #168A8A;
+        box-shadow: 0 0 0 4px rgba(22, 138, 138, 0.10);
+    }
+
+    .farm-form-header h1 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: clamp(29px, 4vw, 40px);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.045em;
+    }
+
+    .farm-form-header p {
+        max-width: 720px;
+        margin: 10px 0 0;
+
+        color: #64748B;
+
+        font-size: 13px;
+        line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
+
+    .farm-form-card {
+        overflow: hidden;
+
+        border: 1px solid rgba(255, 255, 255, 0.94);
+        border-radius: 25px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255, 255, 255, 0.89),
+                rgba(255, 255, 255, 0.72)
+            );
+
+        box-shadow:
+            0 18px 48px rgba(15, 23, 42, 0.065),
+            inset 0 1px 0 rgba(255, 255, 255, 0.98);
+
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+    }
+
+
+    /* =========================================================
+       CARD HEADER
+       ========================================================= */
+
+    .farm-form-card-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+
+        padding: 21px 24px;
+
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .farm-form-card-icon {
+        display: grid;
+        place-items: center;
+
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+
+        border: 1px solid rgba(22, 138, 138, 0.10);
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #E6F4F7,
+                #D9F1F3
+            );
+
+        color: #0F5B66;
+
+        font-size: 19px;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .farm-form-card-header h2 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .farm-form-card-header span {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #94A3B8;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       FORM BODY
+       ========================================================= */
+
+    .farm-form-body {
+        padding: 27px 24px 25px;
+    }
+
+    .farm-form-intro {
+        margin-bottom: 25px;
+        padding: 13px 15px;
+
+        border: 1px solid rgba(37, 99, 235, 0.09);
+        border-radius: 14px;
+
+        background: rgba(37, 99, 235, 0.045);
+
+        color: #64748B;
+
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .farm-form-intro strong {
+        color: #2563EB;
+    }
+
+
+    /* =========================================================
+       SECTION TITLES
+       ========================================================= */
+
+    .farm-form-section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        margin-bottom: 17px;
+    }
+
+    .farm-form-section-title::before {
+        content: "";
+
+        width: 4px;
+        height: 19px;
+
+        border-radius: 999px;
+
+        background:
+            linear-gradient(
+                180deg,
+                #0F5B66,
+                #168A8A
+            );
+    }
+
+    .farm-form-section-title h3 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .farm-form-section-title span {
+        color: #94A3B8;
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       FARM INFORMATION GRID
+       ========================================================= */
+
+    .farm-form-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 19px;
+    }
+
+    .farm-form-group {
+        min-width: 0;
+    }
+
+    .farm-form-group-full {
+        grid-column: 1 / -1;
+    }
+
+    .farm-form-group label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #334155;
+
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .farm-form-group input,
+    .farm-form-group select,
+    .farm-form-group textarea,
+    .farm-form-group .form-control {
+        width: 100%;
+        min-height: 44px;
+
+        box-sizing: border-box;
+
+        padding: 10px 12px;
+
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 12px;
+
+        outline: none;
+
+        background: rgba(255, 255, 255, 0.78);
+
+        color: #0F172A;
+
+        font-family: inherit;
+        font-size: 12px;
+
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
+            background 0.18s ease;
+    }
+
+    .farm-form-group input:hover,
+    .farm-form-group select:hover,
+    .farm-form-group textarea:hover {
+        border-color: rgba(15, 91, 102, 0.25);
+        background: rgba(255, 255, 255, 0.92);
+    }
+
+    .farm-form-group input:focus,
+    .farm-form-group select:focus,
+    .farm-form-group textarea:focus {
+        border-color: rgba(22, 138, 138, 0.55);
+        background: #FFFFFF;
+
+        box-shadow:
+            0 0 0 4px rgba(22, 138, 138, 0.08);
+    }
+
+    .farm-form-group input::placeholder,
+    .farm-form-group textarea::placeholder {
+        color: #A8B3C2;
+    }
+
+    .farm-form-help {
+        display: block;
+
+        margin-top: 6px;
+
+        color: #94A3B8;
+
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .farm-form-errors {
+        margin-top: 6px;
+    }
+
+    .farm-form-errors ul,
+    .errorlist {
+        margin: 5px 0 0;
+        padding-left: 18px;
+
+        color: #DC3545;
+
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .farm-form-nonfield-errors {
+        margin-bottom: 19px;
+        padding: 12px 14px;
+
+        border: 1px solid rgba(220, 53, 69, 0.13);
+        border-radius: 13px;
+
+        background: rgba(220, 53, 69, 0.06);
+
+        color: #B42318;
+
+        font-size: 11px;
+    }
+
+    .farm-form-nonfield-errors ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+
+    /* =========================================================
+       LOCATION SECTION
+       ========================================================= */
+
+    .farm-location-section {
+        margin-top: 30px;
+        padding-top: 27px;
+
+        border-top: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .farm-location-header {
+        margin-bottom: 17px;
+    }
+
+    .farm-location-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .farm-location-icon {
+        display: grid;
+        place-items: center;
+
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+
+        border: 1px solid rgba(22, 138, 138, 0.10);
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #E6F4F7,
+                #D9F1F3
+            );
+
+        color: #0F5B66;
+
+        font-size: 17px;
+    }
+
+    .farm-location-title h3 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .farm-location-title p {
+        margin: 3px 0 0;
+
+        color: #94A3B8;
+
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       LOCATION INSTRUCTION
+       ========================================================= */
+
+    .farm-location-instruction {
+        margin-bottom: 15px;
+        padding: 12px 14px;
+
+        border: 1px solid rgba(22, 138, 138, 0.10);
+        border-radius: 13px;
+
+        background: rgba(230, 244, 247, 0.50);
+
+        color: #64748B;
+
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .farm-location-instruction strong {
+        color: #0F5B66;
+    }
+
+
+    /* =========================================================
+       LOCATION BUTTONS
+       ========================================================= */
+
+    .farm-location-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        margin-bottom: 13px;
+    }
+
+    .farm-location-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 40px;
+
+        padding: 0 14px;
+
+        border-radius: 11px;
+
+        font-family: inherit;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease,
+            background 0.18s ease;
+    }
+
+    .farm-use-location {
+        gap: 7px;
+
+        border: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #0F5B66,
+                #168A8A
+            );
+
+        color: #FFFFFF;
+
+        box-shadow:
+            0 8px 18px rgba(15, 91, 102, 0.17);
+    }
+
+    .farm-use-location:hover {
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 11px 23px rgba(15, 91, 102, 0.23);
+    }
+
+    .farm-clear-location {
+        border: 1px solid rgba(220, 53, 69, 0.13);
+
+        background: rgba(220, 53, 69, 0.055);
+
+        color: #DC3545;
+    }
+
+    .farm-clear-location:hover {
+        transform: translateY(-1px);
+
+        background: rgba(220, 53, 69, 0.085);
+    }
+
+
+    /* =========================================================
+       LOCATION STATUS
+       ========================================================= */
+
+    #location-status {
+        display: none;
+
+        margin-bottom: 13px;
+        padding: 11px 13px;
+
+        border-radius: 11px;
+
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       MAP
+       ========================================================= */
+
+    .farm-map-container {
+        position: relative;
+
+        overflow: hidden;
+
+        width: 100%;
+        height: 460px;
+
+        margin-bottom: 17px;
+
+        border: 1px solid rgba(148, 163, 184, 0.20);
+        border-radius: 18px;
+
+        background: #E6F4F7;
+
+        box-shadow:
+            0 10px 28px rgba(15, 23, 42, 0.07),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    #farm-map {
+        width: 100%;
+        height: 100%;
+        min-height: 460px;
+    }
+
+    .leaflet-container {
+        width: 100%;
+        height: 100%;
+
+        font-family: "Plus Jakarta Sans", sans-serif;
+
+        background: #E6F4F7;
+    }
+
+    .leaflet-control-zoom a {
+        color: #0F5B66 !important;
+    }
+
+    .leaflet-pane {
+        z-index: 400;
+    }
+
+    .leaflet-top,
+    .leaflet-bottom {
+        z-index: 1000;
+    }
+
+
+    /* =========================================================
+       COORDINATES
+       ========================================================= */
+
+    .farm-coordinates {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 15px;
+    }
+
+    .farm-coordinate-card {
+        padding: 14px;
+
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 14px;
+
+        background: rgba(245, 249, 250, 0.68);
+    }
+
+    .farm-coordinate-card label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #475569;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .farm-coordinate-card input {
+        width: 100%;
+        min-height: 42px;
+
+        box-sizing: border-box;
+
+        padding: 9px 11px;
+
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 10px;
+
+        background: rgba(255, 255, 255, 0.72);
+
+        color: #0F172A;
+
+        font-family: inherit;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        outline: none;
+    }
+
+    .farm-coordinate-card input[readonly] {
+        background: rgba(226, 232, 240, 0.42);
+
+        color: #475569;
+
+        cursor: not-allowed;
+    }
+
+    .farm-coordinate-note {
+        margin-top: 9px;
+
+        color: #94A3B8;
+
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       FORM ACTIONS
+       ========================================================= */
+
+    .farm-form-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 29px;
+        padding-top: 23px;
+
+        border-top: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .farm-save-button,
+    .farm-cancel-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 44px;
+
+        padding: 0 19px;
+
+        border-radius: 12px;
+
+        font-family: inherit;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .farm-save-button {
+        gap: 8px;
+
+        border: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #0F5B66,
+                #168A8A
+            );
+
+        color: #FFFFFF;
+
+        box-shadow:
+            0 9px 22px rgba(15, 91, 102, 0.20);
+    }
+
+    .farm-save-button:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 13px 28px rgba(15, 91, 102, 0.26);
+    }
+
+    .farm-cancel-button {
+        border: 1px solid rgba(148, 163, 184, 0.17);
+
+        background: rgba(255, 255, 255, 0.72);
+
+        color: #475569;
+
+        box-shadow:
+            0 7px 18px rgba(15, 23, 42, 0.045);
+    }
+
+    .farm-cancel-button:hover {
+        transform: translateY(-2px);
+
+        background: rgba(255, 255, 255, 0.95);
+
+        box-shadow:
+            0 10px 22px rgba(15, 23, 42, 0.07);
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 760px) {
+
+        .farm-form-page {
+            padding: 28px 18px 45px;
+        }
+
+        .farm-form-grid {
+            grid-template-columns: 1fr;
+            gap: 17px;
+        }
+
+        .farm-form-group-full {
+            grid-column: auto;
+        }
+
+        .farm-location-actions {
+            flex-wrap: wrap;
+        }
+
+        .farm-map-container {
+            height: 390px;
+        }
+
+        #farm-map {
+            min-height: 390px;
+        }
+
+        .farm-form-actions {
+            justify-content: stretch;
+            flex-direction: column-reverse;
+        }
+
+        .farm-save-button,
+        .farm-cancel-button {
+            width: 100%;
+        }
+    }
+
+
+    @media (max-width: 520px) {
+
+        .farm-form-page {
+            padding: 23px 14px 40px;
+        }
+
+        .farm-form-header h1 {
+            font-size: 29px;
+        }
+
+        .farm-form-header p {
+            font-size: 12px;
+        }
+
+        .farm-form-card {
+            border-radius: 20px;
+        }
+
+        .farm-form-card-header {
+            padding: 18px;
+        }
+
+        .farm-form-body {
+            padding: 21px 17px 18px;
+        }
+
+        .farm-coordinates {
+            grid-template-columns: 1fr;
+        }
+
+        .farm-map-container {
+            height: 350px;
+            border-radius: 15px;
+        }
+
+        #farm-map {
+            min-height: 350px;
+        }
+
+        .farm-location-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .farm-location-button {
+            width: 100%;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="farm-form-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <header class="farm-form-header">
+
+        <div class="farm-form-eyebrow">
+            <span class="farm-form-eyebrow-dot"></span>
+            Geospatial Farm Registry
+        </div>
+
+        <h1>
+            {{ page_title }}
+        </h1>
+
+        <p>
+            Register aquaculture farm information and accurately
+            identify the farm's geographic location for AquaMap
+            Iloilo's inventory and mapping system.
+        </p>
+
+    </header>
+
+
+    <!-- =====================================================
+         FORM CARD
+         ===================================================== -->
+
+    <section class="farm-form-card">
+
+        <div class="farm-form-card-header">
+
+            <span class="farm-form-card-icon">
+                🗺️
+            </span>
+
+            <div>
+
+                <h2>
+                    Farm Information
+                </h2>
+
+                <span>
+                    Register farm details and geographic location
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="farm-form-body">
+
+            <div class="farm-form-intro">
+
+                <strong>Important:</strong>
+                Enter accurate farm information, then use the map
+                to identify the farm's actual location. The map
+                marker can be dragged to fine-tune the position.
+
+            </div>
+
+
+            <form method="post" id="farm-form">
+
+                {% csrf_token %}
+
+
+                <!-- =============================================
+                     FORM ERRORS
+                     ============================================= -->
+
+                {% if form.non_field_errors %}
+
+                    <div class="farm-form-nonfield-errors">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =============================================
+                     FARM INFORMATION
+                     ============================================= -->
+
+                <div class="farm-form-section-title">
+
+                    <h3>
+                        Farm Details
+                    </h3>
+
+                    <span>
+                        Basic registration information
+                    </span>
+
+                </div>
+
+
+                <div class="farm-form-grid">
+
+                    {% for field in form %}
+
+                        {% if field.name != "latitude" and field.name != "longitude" %}
+
+                            <div class="farm-form-group">
+
+                                {{ field.label_tag }}
+
+                                {{ field }}
+
+                                {% if field.help_text %}
+
+                                    <small class="farm-form-help">
+                                        {{ field.help_text }}
+                                    </small>
+
+                                {% endif %}
+
+                                {% if field.errors %}
+
+                                    <div class="farm-form-errors">
+                                        {{ field.errors }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- =============================================
+                     FARM LOCATION
+                     ============================================= -->
+
+                <section class="farm-location-section">
+
+                    <div class="farm-location-header">
+
+                        <div class="farm-location-title">
+
+                            <span class="farm-location-icon">
+                                📍
+                            </span>
+
+                            <div>
+
+                                <h3>
+                                    Farm Location
+                                </h3>
+
+                                <p>
+                                    Pinpoint the farm's geographic position
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="farm-location-instruction">
+
+                        <strong>How to set the location:</strong>
+                        Click the farm's position on the map,
+                        drag the marker to fine-tune it, or use
+                        your current location if you are physically
+                        at the farm site.
+
+                    </div>
+
+
+                    <!-- =========================================
+                         LOCATION ACTIONS
+                         ========================================= -->
+
+                    <div class="farm-location-actions">
+
+                        <button
+                            type="button"
+                            id="use-location"
+                            class="farm-location-button farm-use-location"
+                        >
+                            <span>📍</span>
+                            Use My Current Location
+                        </button>
+
+                        <button
+                            type="button"
+                            id="clear-location"
+                            class="farm-location-button farm-clear-location"
+                        >
+                            Clear Location
+                        </button>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         LOCATION STATUS
+                         ========================================= -->
+
+                    <div id="location-status"></div>
+
+
+                    <!-- =========================================
+                         MAP
+                         ========================================= -->
+
+                    <div class="farm-map-container">
+
+                        <div id="farm-map"></div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         COORDINATES
+                         ========================================= -->
+
+                    <div class="farm-coordinates">
+
+                        <div class="farm-coordinate-card">
+
+                            <label for="id_latitude">
+                                Latitude
+                            </label>
+
+                            {{ form.latitude }}
+
+                        </div>
+
+
+                        <div class="farm-coordinate-card">
+
+                            <label for="id_longitude">
+                                Longitude
+                            </label>
+
+                            {{ form.longitude }}
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="farm-coordinate-note">
+
+                        Coordinates are automatically generated from
+                        the selected map location and stored to seven
+                        decimal places.
+
+                    </p>
+
+
+                    {% if form.latitude.errors %}
+
+                        <div class="farm-form-errors">
+                            {{ form.latitude.errors }}
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if form.longitude.errors %}
+
+                        <div class="farm-form-errors">
+                            {{ form.longitude.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
+
+                <!-- =============================================
+                     FORM ACTIONS
+                     ============================================= -->
+
+                <div class="farm-form-actions">
+
+                    <a
+                        href="{% url 'farm_list' %}"
+                        class="farm-cancel-button"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="farm-save-button"
+                    >
+                        <span>✓</span>
+                        Save Farm
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin=""
+></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    "use strict";
+
+
+    /* =========================================================
+       ELEMENTS
+       ========================================================= */
+
+    const mapElement = document.getElementById("farm-map");
+
+    const latitudeInput =
+        document.getElementById("id_latitude");
+
+    const longitudeInput =
+        document.getElementById("id_longitude");
+
+    const municipalityInput =
+        document.getElementById("id_municipality");
+
+    const locationStatus =
+        document.getElementById("location-status");
+
+    const useLocationButton =
+        document.getElementById("use-location");
+
+    const clearLocationButton =
+        document.getElementById("clear-location");
+
+    const farmForm =
+        document.getElementById("farm-form");
+
+
+    /* =========================================================
+       SAFETY CHECK
+       ========================================================= */
+
+    if (!mapElement) {
+        console.error("AquaMap: #farm-map element was not found.");
+        return;
+    }
+
+    if (!latitudeInput || !longitudeInput) {
+        console.error(
+            "AquaMap: latitude or longitude input was not found."
+        );
+        return;
+    }
+
+    if (typeof L === "undefined") {
+        console.error(
+            "AquaMap: Leaflet failed to load."
+        );
+
+        if (locationStatus) {
+            locationStatus.style.display = "block";
+            locationStatus.style.background =
+                "rgba(220, 53, 69, 0.07)";
+            locationStatus.style.border =
+                "1px solid rgba(220, 53, 69, 0.13)";
+            locationStatus.style.color =
+                "#B42318";
+            locationStatus.textContent =
+                "The map library could not be loaded. Please refresh the page and try again.";
+        }
+
+        return;
+    }
+
+
+    /* =========================================================
+       DEFAULT MAP CENTER
+       ILOILO PROVINCE
+       ========================================================= */
+
+    const defaultLatitude = 10.7202;
+    const defaultLongitude = 122.5621;
+
+
+    /* =========================================================
+       MUNICIPALITY APPROXIMATE CENTERS
+       These are navigation centers only.
+       They are NOT farm coordinates.
+       ========================================================= */
+
+    const municipalityCenters = {
+
+        "Dumangas": {
+            latitude: 10.8250,
+            longitude: 122.7130,
+            zoom: 13
+        },
+
+        "Barotac Nuevo": {
+            latitude: 10.9000,
+            longitude: 122.7050,
+            zoom: 13
+        },
+
+        "Pototan": {
+            latitude: 10.9440,
+            longitude: 122.6360,
+            zoom: 13
+        }
+
+    };
+
+
+    /* =========================================================
+       EXISTING COORDINATES
+       ========================================================= */
+
+    const initialLatitude =
+        parseFloat(latitudeInput.value);
+
+    const initialLongitude =
+        parseFloat(longitudeInput.value);
+
+
+    let mapLatitude = defaultLatitude;
+    let mapLongitude = defaultLongitude;
+    let mapZoom = 10;
+
+
+    if (
+        Number.isFinite(initialLatitude) &&
+        Number.isFinite(initialLongitude)
+    ) {
+
+        mapLatitude = initialLatitude;
+        mapLongitude = initialLongitude;
+        mapZoom = 17;
+
+    }
+
+
+    /* =========================================================
+       CREATE MAP
+       ========================================================= */
+
+    let map;
+
+    try {
+
+        map = L.map("farm-map", {
+            center: [
+                mapLatitude,
+                mapLongitude
+            ],
+            zoom: mapZoom,
+            zoomControl: true,
+            attributionControl: true
+        });
+
+    } catch (error) {
+
+        console.error(
+            "AquaMap: Unable to initialize Leaflet map.",
+            error
+        );
+
+        return;
+    }
+
+
+    /* =========================================================
+       OPENSTREETMAP TILE LAYER
+       ========================================================= */
+
+    const tileLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 19,
+            minZoom: 3,
+
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+        }
+    );
+
+
+    tileLayer.addTo(map);
+
+
+    /* =========================================================
+       MARKER
+       ========================================================= */
+
+    let marker = null;
+
+
+    /* =========================================================
+       STATUS MESSAGE
+       ========================================================= */
+
+    function showStatus(message, type = "info") {
+
+        if (!locationStatus) {
+            return;
+        }
+
+        locationStatus.style.display = "block";
+        locationStatus.textContent = message;
+
+
+        if (type === "success") {
+
+            locationStatus.style.background =
+                "rgba(25, 135, 84, 0.08)";
+
+            locationStatus.style.border =
+                "1px solid rgba(25, 135, 84, 0.13)";
+
+            locationStatus.style.color =
+                "#166534";
+
+        }
+
+        else if (type === "error") {
+
+            locationStatus.style.background =
+                "rgba(220, 53, 69, 0.07)";
+
+            locationStatus.style.border =
+                "1px solid rgba(220, 53, 69, 0.13)";
+
+            locationStatus.style.color =
+                "#B42318";
+
+        }
+
+        else {
+
+            locationStatus.style.background =
+                "rgba(37, 99, 235, 0.07)";
+
+            locationStatus.style.border =
+                "1px solid rgba(37, 99, 235, 0.10)";
+
+            locationStatus.style.color =
+                "#1D4ED8";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       UPDATE COORDINATES
+       ========================================================= */
+
+    function updateCoordinates(latitude, longitude) {
+
+        const lat = Number(latitude).toFixed(7);
+        const lng = Number(longitude).toFixed(7);
+
+        latitudeInput.value = lat;
+        longitudeInput.value = lng;
+
+    }
+
+
+    /* =========================================================
+       SET MARKER
+       ========================================================= */
+
+    function setMarker(
+        latitude,
+        longitude,
+        zoomMap = true
+    ) {
+
+        const lat = Number(latitude);
+        const lng = Number(longitude);
+
+
+        if (
+            !Number.isFinite(lat) ||
+            !Number.isFinite(lng)
+        ) {
+
+            showStatus(
+                "Invalid map coordinates.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const position = [
+            lat,
+            lng
+        ];
+
+
+        /* =====================================================
+           CREATE MARKER
+           ===================================================== */
+
+        if (!marker) {
+
+            marker = L.marker(
+                position,
+                {
+                    draggable: true,
+                    autoPan: true
+                }
+            ).addTo(map);
+
+
+            /* =================================================
+               MARKER DRAG
+               ================================================= */
+
+            marker.on(
+                "dragend",
+                function () {
+
+                    const markerPosition =
+                        marker.getLatLng();
+
+
+                    updateCoordinates(
+                        markerPosition.lat,
+                        markerPosition.lng
+                    );
+
+
+                    showStatus(
+                        "Farm location updated. You can continue fine-tuning the marker.",
+                        "success"
+                    );
+
+                }
+            );
+
+        }
+
+        else {
+
+            marker.setLatLng(position);
+
+        }
+
+
+        /* =====================================================
+           UPDATE FORM
+           ===================================================== */
+
+        updateCoordinates(
+            lat,
+            lng
+        );
+
+
+        /* =====================================================
+           CENTER MAP
+           ===================================================== */
+
+        if (zoomMap) {
+
+            map.setView(
+                position,
+                17,
+                {
+                    animate: true
+                }
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       MAP CLICK
+       ========================================================= */
+
+    map.on(
+        "click",
+        function (event) {
+
+            setMarker(
+                event.latlng.lat,
+                event.latlng.lng,
+                true
+            );
+
+
+            showStatus(
+                "Farm location selected. Drag the marker to fine-tune the exact position.",
+                "success"
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       EXISTING FARM LOCATION
+       ========================================================= */
+
+    if (
+        Number.isFinite(initialLatitude) &&
+        Number.isFinite(initialLongitude)
+    ) {
+
+        setMarker(
+            initialLatitude,
+            initialLongitude,
+            false
+        );
+
+
+        showStatus(
+            "Existing farm location loaded. Drag the marker to adjust it.",
+            "info"
+        );
+
+    }
+
+
+    /* =========================================================
+       MUNICIPALITY CHANGE
+       ========================================================= */
+
+    if (municipalityInput) {
+
+        municipalityInput.addEventListener(
+            "change",
+            function () {
+
+                const municipality =
+                    municipalityInput.value;
+
+
+                const center =
+                    municipalityCenters[municipality];
+
+
+                if (!center) {
+                    return;
+                }
+
+
+                map.setView(
+                    [
+                        center.latitude,
+                        center.longitude
+                    ],
+                    center.zoom,
+                    {
+                        animate: true
+                    }
+                );
+
+
+                /*
+                 * Important:
+                 * Do not automatically create a farm marker here.
+                 * The officer must click the actual farm location.
+                 */
+
+                showStatus(
+                    "Map centered on " +
+                    municipality +
+                    ". Click the exact farm location to place the marker.",
+                    "info"
+                );
+
+
+                setTimeout(
+                    function () {
+                        map.invalidateSize();
+                    },
+                    250
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       USE CURRENT LOCATION
+       ========================================================= */
+
+    if (useLocationButton) {
+
+        useLocationButton.addEventListener(
+            "click",
+            function () {
+
+                if (!navigator.geolocation) {
+
+                    showStatus(
+                        "Location services are not supported by this browser.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                showStatus(
+                    "Requesting your current location...",
+                    "info"
+                );
+
+
+                navigator.geolocation.getCurrentPosition(
+
+                    function (position) {
+
+                        const latitude =
+                            position.coords.latitude;
+
+                        const longitude =
+                            position.coords.longitude;
+
+
+                        setMarker(
+                            latitude,
+                            longitude,
+                            true
+                        );
+
+
+                        showStatus(
+                            "Your current location has been selected. Please verify the marker before saving.",
+                            "success"
+                        );
+
+                    },
+
+
+                    function (error) {
+
+                        let message =
+                            "Unable to get your current location.";
+
+
+                        if (
+                            error.code ===
+                            error.PERMISSION_DENIED
+                        ) {
+
+                            message =
+                                "Location permission was denied. Please allow location access in your browser and try again.";
+
+                        }
+
+                        else if (
+                            error.code ===
+                            error.POSITION_UNAVAILABLE
+                        ) {
+
+                            message =
+                                "Your current location is unavailable. Please select the location manually on the map.";
+
+                        }
+
+                        else if (
+                            error.code ===
+                            error.TIMEOUT
+                        ) {
+
+                            message =
+                                "The location request timed out. Please try again or select the location manually.";
+
+                        }
+
+
+                        showStatus(
+                            message,
+                            "error"
+                        );
+
+                    },
+
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    }
+
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       CLEAR LOCATION
+       ========================================================= */
+
+    if (clearLocationButton) {
+
+        clearLocationButton.addEventListener(
+            "click",
+            function () {
+
+                if (marker) {
+
+                    map.removeLayer(marker);
+                    marker = null;
+
+                }
+
+
+                latitudeInput.value = "";
+                longitudeInput.value = "";
+
+
+                showStatus(
+                    "Farm location cleared. Click the map to select a new location.",
+                    "info"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       FORM VALIDATION
+       ========================================================= */
+
+    if (farmForm) {
+
+        farmForm.addEventListener(
+            "submit",
+            function (event) {
+
+                const latitude =
+                    latitudeInput.value.trim();
+
+                const longitude =
+                    longitudeInput.value.trim();
+
+
+                if (
+                    latitude === "" ||
+                    longitude === ""
+                ) {
+
+                    event.preventDefault();
+
+
+                    showStatus(
+                        "Please select the farm's location on the map before saving.",
+                        "error"
+                    );
+
+
+                    mapElement.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    return;
+
+                }
+
+
+                const latitudeNumber =
+                    Number(latitude);
+
+                const longitudeNumber =
+                    Number(longitude);
+
+
+                if (
+                    !Number.isFinite(latitudeNumber) ||
+                    !Number.isFinite(longitudeNumber)
+                ) {
+
+                    event.preventDefault();
+
+
+                    showStatus(
+                        "The selected location is invalid. Please click the map again.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       MAP DISPLAY FIX
+       ========================================================= */
+
+    function refreshMapSize() {
+
+        if (map) {
+
+            map.invalidateSize({
+                pan: false,
+                animate: false
+            });
+
+        }
+
+    }
+
+
+    /*
+     * Refresh several times because the system base,
+     * browser layout, and fonts may finish rendering
+     * at slightly different times.
+     */
+
+    setTimeout(refreshMapSize, 100);
+    setTimeout(refreshMapSize, 300);
+    setTimeout(refreshMapSize, 700);
+
+
+    /* =========================================================
+       WINDOW RESIZE
+       ========================================================= */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            refreshMapSize();
+
+        }
+    );
+
+
+    /* =========================================================
+       DEBUG MESSAGE
+       ========================================================= */
+
+    console.log(
+        "AquaMap farm map initialized successfully."
+    );
+
+});
+
+</script>
+
+{% endblock %}

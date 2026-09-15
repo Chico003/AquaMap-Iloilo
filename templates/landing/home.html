@@ -1,0 +1,996 @@
+{% extends "base.html" %}
+
+{% block title %}
+AquaMap Iloilo | Geospatial Aquaculture Platform
+{% endblock %}
+
+
+{% block content %}
+
+<div class="landing-page">
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="landing-hero">
+
+        <div class="landing-wrapper">
+
+            <div class="landing-hero-content">
+
+                <div class="landing-tag">
+                    GEOSPATIAL AQUACULTURE PLATFORM
+                </div>
+
+                <h1>
+                    Mapping Iloilo's
+                    <span>Aquaculture</span>
+                    Future.
+                </h1>
+
+                <p>
+                    A centralized platform for aquaculture
+                    inventory, farm mapping, production
+                    monitoring, and data-driven management.
+                </p>
+
+                <div class="landing-buttons">
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="landing-button-primary"
+                    >
+                        Access AquaMap
+                    </a>
+
+                    <a
+                        href="#overview"
+                        class="landing-button-secondary"
+                    >
+                        View Aquaculture Data
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MAP VISUAL
+                 ================================================= -->
+
+            <div class="landing-hero-visual">
+
+                <div class="landing-map-card">
+
+                    <div class="landing-map-header">
+
+                        <div>
+
+                            <small>
+                                AQUAMAP ILOILO
+                            </small>
+
+                            <strong>
+                                Aquaculture Map
+                            </strong>
+
+                        </div>
+
+                        <span class="landing-live">
+                            <i></i>
+                            LIVE
+                        </span>
+
+                    </div>
+
+
+                    <div class="landing-map-area">
+
+                        <div class="map-shape map-shape-one"></div>
+
+                        <div class="map-shape map-shape-two"></div>
+
+                        <div class="map-shape map-shape-three"></div>
+
+
+                        <div class="farm-pin pin-one">
+                            <span></span>
+                        </div>
+
+                        <div class="farm-pin pin-two">
+                            <span></span>
+                        </div>
+
+                        <div class="farm-pin pin-three">
+                            <span></span>
+                        </div>
+
+                        <div class="farm-pin pin-four">
+                            <span></span>
+                        </div>
+
+                        <div class="farm-pin pin-five">
+                            <span></span>
+                        </div>
+
+
+                        <div class="map-info-card">
+
+                            <div class="map-info-icon">
+                                A
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Aquaculture Farm
+                                </strong>
+
+                                <span>
+                                    Iloilo Province
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="map-label">
+                            ILOILO AQUACULTURE NETWORK
+                        </div>
+
+                    </div>
+
+
+                    <div class="landing-map-footer">
+
+                        <span>
+                            <i></i>
+                            Registered farms
+                        </span>
+
+                        <span>
+                            Iloilo Province
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="floating-card floating-card-top">
+
+                    <strong>
+                        GIS
+                    </strong>
+
+                    <span>
+                        Farm Mapping
+                    </span>
+
+                </div>
+
+
+                <div class="floating-card floating-card-bottom">
+
+                    <strong>
+                        24/7
+                    </strong>
+
+                    <span>
+                        Data Access
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         AQUAMAP AT A GLANCE
+         ===================================================== -->
+
+    <section
+        class="landing-overview"
+        id="overview"
+    >
+
+        <div class="landing-wrapper">
+
+            <div class="landing-section-heading">
+
+                <div class="landing-tag">
+                    AQUAMAP AT A GLANCE
+                </div>
+
+                <h2>
+                    Iloilo's aquaculture
+                    <span>in numbers.</span>
+                </h2>
+
+                <p>
+                    A general overview of the aquaculture
+                    information currently recorded in the
+                    AquaMap platform.
+                </p>
+
+            </div>
+
+
+            <div class="landing-stat-grid">
+
+
+                <!-- FARMERS -->
+
+                <div class="landing-stat-card">
+
+                    <div class="landing-stat-icon">
+                        F
+                    </div>
+
+                    <div class="landing-stat-content">
+
+                        <span>
+                            Registered Farmers
+                        </span>
+
+                        <strong>
+                            {{ total_farmers|default:"0" }}
+                        </strong>
+
+                        <small>
+                            Farmer records
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FARMS -->
+
+                <div class="landing-stat-card">
+
+                    <div class="landing-stat-icon">
+                        M
+                    </div>
+
+                    <div class="landing-stat-content">
+
+                        <span>
+                            Aquaculture Farms
+                        </span>
+
+                        <strong>
+                            {{ total_farms|default:"0" }}
+                        </strong>
+
+                        <small>
+                            Registered farm sites
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRODUCTION RECORDS -->
+
+                <div class="landing-stat-card">
+
+                    <div class="landing-stat-icon">
+                        P
+                    </div>
+
+                    <div class="landing-stat-content">
+
+                        <span>
+                            Production Records
+                        </span>
+
+                        <strong>
+                            {{ total_production_records|default:"0" }}
+                        </strong>
+
+                        <small>
+                            Recorded production entries
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRODUCTION -->
+
+                <div class="landing-stat-card">
+
+                    <div class="landing-stat-icon">
+                        MT
+                    </div>
+
+                    <div class="landing-stat-content">
+
+                        <span>
+                            Total Production
+                        </span>
+
+                        <strong>
+                            {{ total_production|default:"0" }}
+                        </strong>
+
+                        <small>
+                            Recorded production quantity
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MUNICIPALITIES -->
+
+                <div class="landing-stat-card">
+
+                    <div class="landing-stat-icon">
+                        LGU
+                    </div>
+
+                    <div class="landing-stat-content">
+
+                        <span>
+                            Municipalities Covered
+                        </span>
+
+                        <strong>
+                            {{ total_municipalities|default:"0" }}
+                        </strong>
+
+                        <small>
+                            Participating municipalities
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="landing-overview-note">
+
+                <span class="overview-note-dot"></span>
+
+                <span>
+                    Statistics are automatically updated from
+                    records maintained in the AquaMap platform.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PLATFORM INTRO
+         ===================================================== -->
+
+    <section
+        class="landing-platform"
+        id="platform"
+    >
+
+        <div class="landing-wrapper">
+
+            <div class="landing-section-heading">
+
+                <div class="landing-tag">
+                    THE AQUAMAP PLATFORM
+                </div>
+
+                <h2>
+                    Everything you need to
+                    <span>manage aquaculture data.</span>
+                </h2>
+
+                <p>
+                    AquaMap connects farmer records, farm
+                    locations, and production information in
+                    one centralized platform.
+                </p>
+
+            </div>
+
+
+            <div class="landing-feature-grid">
+
+
+                <article class="landing-feature">
+
+                    <div class="feature-top">
+
+                        <span class="feature-number">
+                            01
+                        </span>
+
+                        <span class="feature-icon">
+                            F
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Manage Farmers
+                    </h3>
+
+                    <p>
+                        Maintain organized farmer information
+                        and connect farmers to their registered
+                        aquaculture farms.
+                    </p>
+
+                </article>
+
+
+                <article class="landing-feature">
+
+                    <div class="feature-top">
+
+                        <span class="feature-number">
+                            02
+                        </span>
+
+                        <span class="feature-icon">
+                            M
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Map Aquaculture Farms
+                    </h3>
+
+                    <p>
+                        Record precise farm locations and
+                        visualize aquaculture sites across
+                        participating municipalities.
+                    </p>
+
+                </article>
+
+
+                <article class="landing-feature">
+
+                    <div class="feature-top">
+
+                        <span class="feature-number">
+                            03
+                        </span>
+
+                        <span class="feature-icon">
+                            P
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Monitor Production
+                    </h3>
+
+                    <p>
+                        Track species, quantities, dates,
+                        and farm production records for
+                        easier monitoring and reporting.
+                    </p>
+
+                </article>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         WORKFLOW
+         ===================================================== -->
+
+    <section class="landing-process">
+
+        <div class="landing-wrapper">
+
+            <div class="landing-section-heading centered">
+
+                <div class="landing-tag">
+                    SIMPLE WORKFLOW
+                </div>
+
+                <h2>
+                    From field data to
+                    <span>better decisions.</span>
+                </h2>
+
+            </div>
+
+
+            <div class="process-grid">
+
+                <div class="process-item">
+
+                    <div class="process-circle">
+                        01
+                    </div>
+
+                    <h3>
+                        Register
+                    </h3>
+
+                    <p>
+                        Record farmers and aquaculture
+                        farm information.
+                    </p>
+
+                </div>
+
+
+                <div class="process-line"></div>
+
+
+                <div class="process-item">
+
+                    <div class="process-circle">
+                        02
+                    </div>
+
+                    <h3>
+                        Map
+                    </h3>
+
+                    <p>
+                        Pin and visualize farm locations
+                        geographically.
+                    </p>
+
+                </div>
+
+
+                <div class="process-line"></div>
+
+
+                <div class="process-item">
+
+                    <div class="process-circle">
+                        03
+                    </div>
+
+                    <h3>
+                        Monitor
+                    </h3>
+
+                    <p>
+                        Track production and generate
+                        useful reports.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         INSTITUTIONAL NETWORK
+         ===================================================== -->
+
+    <section class="landing-network">
+
+        <div class="landing-wrapper">
+
+            <div class="network-card">
+
+                <div class="network-content">
+
+                    <div class="landing-tag">
+                        CONNECTED AQUACULTURE DATA
+                    </div>
+
+                    <h2>
+                        One platform.
+                        <br>
+                        <span>Shared information.</span>
+                    </h2>
+
+                    <p>
+                        AquaMap enables municipal agriculture
+                        offices and BFAR Region VI to work with
+                        organized aquaculture information through
+                        a centralized digital platform.
+                    </p>
+
+                </div>
+
+
+                <div class="network-list">
+
+                    <div class="network-item">
+
+                        <strong>
+                            BFAR Region VI
+                        </strong>
+
+                        <span>
+                            Consolidated monitoring
+                        </span>
+
+                    </div>
+
+
+                    <div class="network-item">
+
+                        <strong>
+                            Municipal Agriculture Offices
+                        </strong>
+
+                        <span>
+                            Local data management
+                        </span>
+
+                    </div>
+
+
+                    <div class="network-item">
+
+                        <strong>
+                            Local Government Units
+                        </strong>
+
+                        <span>
+                            Better aquaculture information
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FINAL CTA
+         ===================================================== -->
+
+    <section class="landing-final">
+
+        <div class="landing-wrapper">
+
+            <div class="landing-final-card">
+
+                <div>
+
+                    <div class="landing-tag">
+                        AQUAMAP ILOILO
+                    </div>
+
+                    <h2>
+                        From data to better
+                        aquaculture decisions.
+                    </h2>
+
+                    <p>
+                        Access the AquaMap platform and
+                        explore centralized aquaculture
+                        information across Iloilo.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{% url 'login' %}"
+                    class="landing-button-primary"
+                >
+                    Access AquaMap
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+{% endblock %}
+
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   AQUAMAP GENERAL INFORMATION
+   ========================================================= */
+
+.landing-overview {
+
+    position: relative;
+
+    padding: 110px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f5f9fa 0%,
+            #ffffff 100%
+        );
+}
+
+
+.landing-stat-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 16px;
+
+    margin-top: 45px;
+}
+
+
+.landing-stat-card {
+
+    min-height: 180px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 24px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.95);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    box-shadow:
+        0 15px 40px rgba(15, 23, 42, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.landing-stat-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        0 20px 45px rgba(15, 23, 42, 0.09);
+}
+
+
+.landing-stat-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        #e6f4f7;
+
+    color:
+        #0f5b66;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+.landing-stat-content {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.landing-stat-content span {
+
+    color:
+        #64748b;
+
+    font-size: 9px;
+
+    font-weight: 600;
+}
+
+
+.landing-stat-content strong {
+
+    margin-top: 5px;
+
+    color:
+        #0f172a;
+
+    font-size: 29px;
+
+    line-height: 1.1;
+
+    letter-spacing: -1.5px;
+
+    font-weight: 800;
+}
+
+
+.landing-stat-content small {
+
+    margin-top: 5px;
+
+    color:
+        #94a3b8;
+
+    font-size: 7px;
+
+    line-height: 1.4;
+}
+
+
+.landing-overview-note {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 25px;
+
+    color:
+        #64748b;
+
+    font-size: 8px;
+
+    text-align: center;
+}
+
+
+.overview-note-dot {
+
+    width: 6px;
+
+    height: 6px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        #198754;
+
+    box-shadow:
+        0 0 0 4px rgba(25, 135, 84, 0.08);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .landing-stat-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .landing-overview {
+
+        padding: 75px 0;
+    }
+
+
+    .landing-stat-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 12px;
+
+        margin-top: 30px;
+    }
+
+
+    .landing-stat-card {
+
+        min-height: 155px;
+
+        padding: 18px;
+    }
+
+
+    .landing-stat-content strong {
+
+        font-size: 24px;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .landing-stat-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .landing-stat-card {
+
+        min-height: 135px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

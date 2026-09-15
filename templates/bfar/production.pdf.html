@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <style>
+
+        @page {
+            size: A4 landscape;
+            margin: 30px;
+        }
+
+        body {
+            font-family: Helvetica;
+            font-size: 9px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        p {
+            font-size: 9px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #0f4c5c;
+            color: white;
+            border: 1px solid #000000;
+            padding: 5px;
+        }
+
+        td {
+            border: 1px solid #000000;
+            padding: 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>
+        AQUAMAP ILOILO
+    </h1>
+
+    <h2>
+        BFAR Region VI Consolidated Production Report
+    </h2>
+
+    <p>
+        <strong>Coverage:</strong>
+        All Participating Municipalities
+    </p>
+
+    <p>
+        <strong>Date Generated:</strong>
+        {{ generated_at|date:"F d, Y h:i A" }}
+    </p>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Production Date</th>
+                <th>Farm</th>
+                <th>Farmer</th>
+                <th>Municipality</th>
+                <th>Barangay</th>
+                <th>Species</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Remarks</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for record in records %}
+
+            <tr>
+
+                <td>
+                    {{ record.production_date|date:"M d, Y" }}
+                </td>
+
+                <td>
+                    {{ record.farm.farm_name }}
+                </td>
+
+                <td>
+                    {{ record.farm.farmer }}
+                </td>
+
+                <td>
+                    {{ record.farm.municipality.name }}
+                </td>
+
+                <td>
+                    {{ record.farm.barangay }}
+                </td>
+
+                <td>
+                    {{ record.species }}
+                </td>
+
+                <td>
+                    {{ record.quantity }}
+                </td>
+
+                <td>
+                    {{ record.get_unit_display }}
+                </td>
+
+                <td>
+                    {{ record.remarks|default:"-" }}
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="9">
+                    No production records available.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <p>
+        AquaMap Iloilo —
+        BFAR Region VI Consolidated Report
+    </p>
+
+</body>
+
+</html>

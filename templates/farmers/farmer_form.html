@@ -1,0 +1,765 @@
+{% extends "system_base.html" %}
+
+{% block title %}
+{{ page_title }} | AquaMap Iloilo
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    /* =========================================================
+       FARMER FORM PAGE
+       ========================================================= */
+
+    .farmer-form-page {
+        width: 100%;
+        max-width: 1050px;
+
+        margin: 0 auto;
+
+        padding: 38px 30px 56px;
+    }
+
+
+    /* =========================================================
+       PAGE HEADER
+       ========================================================= */
+
+    .farmer-form-header {
+        margin-bottom: 25px;
+    }
+
+
+    .farmer-form-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+
+        margin-bottom: 12px;
+
+        padding: 7px 12px;
+
+        border:
+            1px solid rgba(22, 138, 138, 0.13);
+
+        border-radius: 999px;
+
+        background:
+            rgba(230, 244, 247, 0.72);
+
+        color: #0F5B66;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+
+    .farmer-form-eyebrow-dot {
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #168A8A;
+
+        box-shadow:
+            0 0 0 4px rgba(22, 138, 138, 0.10);
+    }
+
+
+    .farmer-form-header h1 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: clamp(29px, 4vw, 40px);
+        font-weight: 800;
+
+        line-height: 1.1;
+
+        letter-spacing: -0.045em;
+    }
+
+
+    .farmer-form-header p {
+        max-width: 650px;
+
+        margin: 10px 0 0;
+
+        color: #64748B;
+
+        font-size: 13px;
+
+        line-height: 1.65;
+    }
+
+
+    /* =========================================================
+       FORM CARD
+       ========================================================= */
+
+    .farmer-form-card {
+        overflow: hidden;
+
+        border:
+            1px solid rgba(255, 255, 255, 0.94);
+
+        border-radius: 25px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255, 255, 255, 0.89),
+                rgba(255, 255, 255, 0.72)
+            );
+
+        box-shadow:
+            0 18px 48px rgba(15, 23, 42, 0.065),
+            inset 0 1px 0 rgba(255, 255, 255, 0.98);
+
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+    }
+
+
+    /* =========================================================
+       CARD HEADER
+       ========================================================= */
+
+    .farmer-form-card-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+
+        padding: 21px 24px;
+
+        border-bottom:
+            1px solid rgba(148, 163, 184, 0.12);
+    }
+
+
+    .farmer-form-card-icon {
+        display: grid;
+        place-items: center;
+
+        width: 42px;
+        height: 42px;
+
+        flex-shrink: 0;
+
+        border:
+            1px solid rgba(22, 138, 138, 0.10);
+
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #E6F4F7,
+                #D9F1F3
+            );
+
+        color: #0F5B66;
+
+        font-size: 19px;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+
+    .farmer-form-card-header h2 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+
+    .farmer-form-card-header span {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #94A3B8;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       FORM BODY
+       ========================================================= */
+
+    .farmer-form-body {
+        padding: 27px 24px 24px;
+    }
+
+
+    .farmer-form-intro {
+        margin-bottom: 24px;
+
+        padding: 13px 15px;
+
+        border:
+            1px solid rgba(37, 99, 235, 0.09);
+
+        border-radius: 14px;
+
+        background:
+            rgba(37, 99, 235, 0.045);
+
+        color: #64748B;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+    }
+
+
+    .farmer-form-intro strong {
+        color: #2563EB;
+    }
+
+
+    /* =========================================================
+       FORM FIELDS
+       ========================================================= */
+
+    .farmer-form-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 20px;
+    }
+
+
+    .farmer-form-group {
+        min-width: 0;
+    }
+
+
+    .farmer-form-group-full {
+        grid-column: 1 / -1;
+    }
+
+
+    .farmer-form-group label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #334155;
+
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+
+    .farmer-form-group label::after {
+        content: "";
+    }
+
+
+    .farmer-form-group input,
+    .farmer-form-group select,
+    .farmer-form-group textarea,
+    .farmer-form-group .form-control {
+        width: 100%;
+
+        min-height: 44px;
+
+        box-sizing: border-box;
+
+        padding: 10px 12px;
+
+        border:
+            1px solid rgba(148, 163, 184, 0.25);
+
+        border-radius: 12px;
+
+        outline: none;
+
+        background:
+            rgba(255, 255, 255, 0.78);
+
+        color: #0F172A;
+
+        font-family: inherit;
+
+        font-size: 12px;
+
+        transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
+            background 0.18s ease;
+    }
+
+
+    .farmer-form-group textarea {
+        min-height: 100px;
+
+        resize: vertical;
+    }
+
+
+    .farmer-form-group input:hover,
+    .farmer-form-group select:hover,
+    .farmer-form-group textarea:hover {
+        border-color:
+            rgba(15, 91, 102, 0.25);
+
+        background:
+            rgba(255, 255, 255, 0.92);
+    }
+
+
+    .farmer-form-group input:focus,
+    .farmer-form-group select:focus,
+    .farmer-form-group textarea:focus {
+        border-color:
+            rgba(22, 138, 138, 0.55);
+
+        background:
+            #FFFFFF;
+
+        box-shadow:
+            0 0 0 4px rgba(22, 138, 138, 0.08);
+    }
+
+
+    .farmer-form-group input::placeholder,
+    .farmer-form-group textarea::placeholder {
+        color: #A8B3C2;
+    }
+
+
+    /* =========================================================
+       FIELD ERRORS
+       ========================================================= */
+
+    .farmer-form-errors {
+        margin-top: 6px;
+    }
+
+
+    .farmer-form-errors ul,
+    .errorlist {
+        margin: 5px 0 0;
+
+        padding-left: 18px;
+
+        color: #DC3545;
+
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+
+    .farmer-form-nonfield-errors {
+        margin-bottom: 18px;
+
+        padding: 12px 14px;
+
+        border:
+            1px solid rgba(220, 53, 69, 0.13);
+
+        border-radius: 13px;
+
+        background:
+            rgba(220, 53, 69, 0.06);
+
+        color: #B42318;
+
+        font-size: 11px;
+    }
+
+
+    .farmer-form-nonfield-errors ul {
+        margin: 0;
+
+        padding-left: 18px;
+    }
+
+
+    /* =========================================================
+       FORM ACTIONS
+       ========================================================= */
+
+    .farmer-form-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 28px;
+        padding-top: 22px;
+
+        border-top:
+            1px solid rgba(148, 163, 184, 0.12);
+    }
+
+
+    .farmer-form-button,
+    .farmer-form-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 44px;
+
+        padding: 0 18px;
+
+        border-radius: 12px;
+
+        font-family: inherit;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .farmer-form-button {
+        gap: 8px;
+
+        border: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #0F5B66,
+                #168A8A
+            );
+
+        color: #FFFFFF;
+
+        box-shadow:
+            0 9px 22px rgba(15, 91, 102, 0.20);
+    }
+
+
+    .farmer-form-button:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 13px 28px rgba(15, 91, 102, 0.26);
+    }
+
+
+    .farmer-form-cancel {
+        border:
+            1px solid rgba(148, 163, 184, 0.17);
+
+        background:
+            rgba(255, 255, 255, 0.72);
+
+        color: #475569;
+
+        box-shadow:
+            0 7px 18px rgba(15, 23, 42, 0.045);
+    }
+
+
+    .farmer-form-cancel:hover {
+        transform: translateY(-2px);
+
+        background:
+            rgba(255, 255, 255, 0.95);
+
+        box-shadow:
+            0 10px 22px rgba(15, 23, 42, 0.07);
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 720px) {
+
+        .farmer-form-page {
+            padding:
+                28px 18px 45px;
+        }
+
+
+        .farmer-form-grid {
+            grid-template-columns: 1fr;
+
+            gap: 17px;
+        }
+
+
+        .farmer-form-group-full {
+            grid-column: auto;
+        }
+
+
+        .farmer-form-actions {
+            justify-content: stretch;
+
+            flex-direction: column-reverse;
+        }
+
+
+        .farmer-form-button,
+        .farmer-form-cancel {
+            width: 100%;
+        }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+        .farmer-form-page {
+            padding:
+                23px 14px 40px;
+        }
+
+
+        .farmer-form-header h1 {
+            font-size: 29px;
+        }
+
+
+        .farmer-form-header p {
+            font-size: 12px;
+        }
+
+
+        .farmer-form-card {
+            border-radius: 20px;
+        }
+
+
+        .farmer-form-card-header {
+            padding:
+                18px;
+        }
+
+
+        .farmer-form-body {
+            padding:
+                21px 17px 18px;
+        }
+
+
+        .farmer-form-intro {
+            font-size: 10px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="farmer-form-page">
+
+```
+<!-- =====================================================
+     PAGE HEADER
+     ===================================================== -->
+
+<header class="farmer-form-header">
+
+
+    <div class="farmer-form-eyebrow">
+
+        <span class="farmer-form-eyebrow-dot"></span>
+
+        Aquaculture Farmer Registry
+
+    </div>
+
+
+    <h1>
+        {{ page_title }}
+    </h1>
+
+
+    <p>
+        Register and maintain farmer information used by
+        AquaMap Iloilo for aquaculture inventory and
+        production management.
+    </p>
+
+
+</header>
+
+
+<!-- =====================================================
+     FORM CARD
+     ===================================================== -->
+
+<section class="farmer-form-card">
+
+
+    <!-- =================================================
+         CARD HEADER
+         ================================================= -->
+
+    <div class="farmer-form-card-header">
+
+
+        <span class="farmer-form-card-icon">
+            👤
+        </span>
+
+
+        <div>
+
+            <h2>
+                Farmer Information
+            </h2>
+
+            <span>
+                Enter the farmer's basic registration details
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         FORM BODY
+         ================================================= -->
+
+    <div class="farmer-form-body">
+
+
+        <div class="farmer-form-intro">
+
+            <strong>Important:</strong>
+            Please provide accurate information.
+            Farmer records are used to associate registered
+            aquaculture farms and production records.
+
+        </div>
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="farmer-form-nonfield-errors">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="farmer-form-grid">
+
+
+                {% for field in form %}
+
+
+                    <div
+                        class="
+                            farmer-form-group
+                            {% if field.name == 'contact_number' %}
+                                farmer-form-group-full
+                            {% endif %}
+                        "
+                    >
+
+
+                        {{ field.label_tag }}
+
+
+                        {{ field }}
+
+
+                        {% if field.errors %}
+
+                            <div class="farmer-form-errors">
+
+                                {{ field.errors }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            <!-- =========================================
+                 ACTIONS
+                 ========================================= -->
+
+            <div class="farmer-form-actions">
+
+
+                <a
+                    href="{% url 'farmer_list' %}"
+                    class="farmer-form-cancel"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="farmer-form-button"
+                >
+
+                    <span>
+                        ✓
+                    </span>
+
+                    Save Farmer
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</section>
+```
+
+</div>
+
+{% endblock %}

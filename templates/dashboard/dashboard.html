@@ -1,0 +1,1285 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Dashboard | AquaMap Iloilo
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .dashboard-wrapper {
+        min-height: 100vh;
+        background: #f4f7f6;
+        padding: 30px;
+    }
+
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .dashboard-header h1 {
+        margin: 0;
+        font-size: 30px;
+    }
+
+    .dashboard-header p {
+        margin: 6px 0 0;
+        color: #6b7280;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .nav-links a,
+    .logout-button {
+        padding: 10px 16px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+    }
+
+    .nav-links a {
+        background: #2563eb;
+        color: white;
+    }
+
+    .logout-button {
+        background: #dc2626;
+        color: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .stat-card h3 {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .stat-number {
+        margin-top: 10px;
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+        margin-top: 0;
+    }
+
+    /* MAP FILTERS */
+
+    .map-controls {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr auto;
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .map-control {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        background: white;
+        font-size: 14px;
+    }
+
+    .reset-button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 7px;
+        background: #6b7280;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .reset-button:hover {
+        background: #4b5563;
+    }
+
+    .map-result {
+        color: #6b7280;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    /* MAP */
+
+    #farm-map {
+        width: 100%;
+        height: 500px;
+        border-radius: 10px;
+    }
+
+    /* LEGEND */
+
+    .map-legend {
+        background: white;
+        padding: 12px 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.20);
+        line-height: 24px;
+        font-size: 13px;
+    }
+
+    .legend-title {
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .legend-marker {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .legend-fishpond {
+        background: #2563eb;
+    }
+
+    .legend-fishcage {
+        background: #16a34a;
+    }
+
+    .legend-fishpen {
+        background: #f59e0b;
+    }
+
+    .legend-other {
+        background: #7c3aed;
+    }
+
+    /* POPUP */
+
+    .farm-popup {
+        min-width: 260px;
+    }
+
+    .farm-popup h3 {
+        margin: 0 0 10px 0;
+        color: #17324d;
+        font-size: 18px;
+    }
+
+    .farm-popup-row {
+        margin-bottom: 5px;
+    }
+
+    .farm-popup-label {
+        font-weight: 600;
+    }
+
+    .production-box {
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
+    }
+
+    .production-title {
+        font-weight: 700;
+        margin-bottom: 7px;
+        color: #17324d;
+    }
+
+    .production-record {
+        background: #f4f7f6;
+        padding: 7px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        font-size: 12px;
+    }
+
+    .no-production {
+        color: #777;
+        font-size: 12px;
+    }
+
+    /* RECENT FARMS */
+
+    .recent-farm {
+        padding: 12px 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .recent-farm:last-child {
+        border-bottom: none;
+    }
+
+    .recent-farm strong {
+        color: #111827;
+    }
+
+    .recent-farm small {
+        color: #6b7280;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1000px) {
+
+        .map-controls {
+            grid-template-columns: 1fr 1fr;
+        }
+
+    }
+
+    @media (max-width: 900px) {
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .dashboard-wrapper {
+            padding: 20px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .nav-links {
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .map-controls {
+            grid-template-columns: 1fr;
+        }
+
+        #farm-map {
+            height: 400px;
+        }
+
+    }
+
+</style>
+
+
+<div class="dashboard-wrapper">
+
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <h1>
+                AquaMap Iloilo
+            </h1>
+
+            <p>
+                Welcome, {{ user.username }}.
+                Manage aquaculture inventory and production data.
+            </p>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="{% url 'farmer_list' %}">
+                Farmers
+            </a>
+
+            <a href="{% url 'farm_list' %}">
+                Farms
+            </a>
+
+            <a href="{% url 'production_list' %}">
+                Production
+            </a>
+
+
+            <form
+                method="post"
+                action="{% url 'logout' %}"
+                style="display:inline;"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="logout-button"
+                >
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <h3>
+                Total Farmers
+            </h3>
+
+            <div class="stat-number">
+                {{ total_farmers }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Total Farms
+            </h3>
+
+            <div class="stat-number">
+                {{ total_farms }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Municipalities
+            </h3>
+
+            <div class="stat-number">
+                {{ total_municipalities }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Total Production
+            </h3>
+
+            <div class="stat-number">
+                {{ total_production }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- FARM MAP -->
+
+        <div class="card">
+
+            <h2>
+                Farm Map
+            </h2>
+
+            <p
+                class="map-result"
+                id="map-result"
+            >
+                Loading registered farms...
+            </p>
+
+
+            <!-- FILTERS -->
+
+            <div class="map-controls">
+
+                <input
+                    type="text"
+                    id="farm-search"
+                    class="map-control"
+                    placeholder="Search farm, farmer, or barangay..."
+                >
+
+
+                <select
+                    id="municipality-filter"
+                    class="map-control"
+                >
+
+                    <option value="">
+                        All Municipalities
+                    </option>
+
+                    {% for municipality in municipalities %}
+
+                        <option value="{{ municipality.name }}">
+                            {{ municipality.name }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <select
+                    id="farm-type-filter"
+                    class="map-control"
+                >
+
+                    <option value="">
+                        All Farm Types
+                    </option>
+
+                    <option value="FISHPOND">
+                        Fishpond
+                    </option>
+
+                    <option value="FISH_CAGE">
+                        Fish Cage
+                    </option>
+
+                    <option value="FISH_PEN">
+                        Fish Pen
+                    </option>
+
+                    <option value="OTHER">
+                        Other
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="button"
+                    id="reset-filters"
+                    class="reset-button"
+                >
+                    Reset
+                </button>
+
+            </div>
+
+
+            <!-- MAP -->
+
+            <div id="farm-map"></div>
+
+        </div>
+
+
+        <!-- RECENT FARMS -->
+
+        <div class="card">
+
+            <h2>
+                Recent Farms
+            </h2>
+
+
+            {% if recent_farms %}
+
+                {% for farm in recent_farms %}
+
+                    <div class="recent-farm">
+
+                        <strong>
+                            {{ farm.farm_name }}
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            {{ farm.municipality.name }}
+                            —
+                            {{ farm.barangay }}
+                        </small>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p style="color:#6b7280;">
+                    No farms have been registered yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- LEAFLET CSS -->
+
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+
+<!-- LEAFLET JS -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<!-- DJANGO FARM DATA -->
+
+{{ farm_map_data|json_script:"farm-data" }}
+
+
+<script>
+
+    // =========================================
+    // GET FARM DATA
+    // =========================================
+
+    const farmDataElement =
+        document.getElementById("farm-data");
+
+    const farmData =
+        JSON.parse(
+            farmDataElement.textContent
+        );
+
+
+    // =========================================
+    // INITIALIZE LEAFLET MAP
+    // =========================================
+
+    const farmMap =
+        L.map("farm-map");
+
+
+    // =========================================
+    // OPENSTREETMAP TILE LAYER
+    // =========================================
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 19,
+
+            attribution:
+                "&copy; OpenStreetMap contributors"
+        }
+    ).addTo(farmMap);
+
+
+    // =========================================
+    // MARKER STORAGE
+    // =========================================
+
+    const farmMarkers = [];
+
+
+    // =========================================
+    // GET MARKER COLOR
+    // =========================================
+
+    function getMarkerColor(farmType) {
+
+        switch (farmType) {
+
+            case "FISHPOND":
+                return "#2563eb";
+
+            case "FISH_CAGE":
+                return "#16a34a";
+
+            case "FISH_PEN":
+                return "#f59e0b";
+
+            default:
+                return "#7c3aed";
+        }
+
+    }
+
+
+    // =========================================
+    // ESCAPE HTML
+    // =========================================
+
+    function escapeHTML(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value ?? "";
+
+        return div.innerHTML;
+
+    }
+
+
+    // =========================================
+    // CREATE POPUP
+    // =========================================
+
+    function createPopup(farm) {
+
+        let productionHTML = "";
+
+
+        if (farm.production.length > 0) {
+
+            productionHTML = `
+
+                <div class="production-box">
+
+                    <div class="production-title">
+                        Production Records
+                    </div>
+
+                    ${farm.production.map(
+                        function(record) {
+
+                            return `
+
+                                <div class="production-record">
+
+                                    <strong>
+                                        ${escapeHTML(
+                                            record.species
+                                        )}
+                                    </strong>
+
+                                    <br>
+
+                                    ${escapeHTML(
+                                        record.quantity
+                                    )}
+
+                                    ${escapeHTML(
+                                        record.unit
+                                    )}
+
+                                    <br>
+
+                                    Date:
+                                    ${escapeHTML(
+                                        record.production_date
+                                    )}
+
+                                    ${
+                                        record.remarks
+                                        ?
+                                        `<br>${escapeHTML(
+                                            record.remarks
+                                        )}`
+                                        :
+                                        ""
+                                    }
+
+                                </div>
+
+                            `;
+
+                        }
+                    ).join("")}
+
+                </div>
+
+            `;
+
+        } else {
+
+            productionHTML = `
+
+                <div class="production-box">
+
+                    <div class="production-title">
+                        Production Records
+                    </div>
+
+                    <div class="no-production">
+                        No production records available.
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        return `
+
+            <div class="farm-popup">
+
+                <h3>
+                    ${escapeHTML(farm.name)}
+                </h3>
+
+
+                <div class="farm-popup-row">
+
+                    <span class="farm-popup-label">
+                        Farmer:
+                    </span>
+
+                    ${escapeHTML(farm.farmer)}
+
+                </div>
+
+
+                <div class="farm-popup-row">
+
+                    <span class="farm-popup-label">
+                        Municipality:
+                    </span>
+
+                    ${escapeHTML(farm.municipality)}
+
+                </div>
+
+
+                <div class="farm-popup-row">
+
+                    <span class="farm-popup-label">
+                        Barangay:
+                    </span>
+
+                    ${escapeHTML(farm.barangay)}
+
+                </div>
+
+
+                <div class="farm-popup-row">
+
+                    <span class="farm-popup-label">
+                        Farm Type:
+                    </span>
+
+                    ${escapeHTML(
+                        farm.farm_type_display
+                    )}
+
+                </div>
+
+
+                <div class="farm-popup-row">
+
+                    <span class="farm-popup-label">
+                        Area:
+                    </span>
+
+                    ${escapeHTML(farm.area)}
+                    ha
+
+                </div>
+
+
+                <div class="farm-popup-row">
+
+                    <span class="farm-popup-label">
+                        Coordinates:
+                    </span>
+
+                    ${farm.latitude},
+                    ${farm.longitude}
+
+                </div>
+
+
+                ${productionHTML}
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =========================================
+    // CREATE MARKERS
+    // =========================================
+
+    farmData.forEach(
+        function(farm) {
+
+            const color =
+                getMarkerColor(
+                    farm.farm_type
+                );
+
+
+            const icon =
+                L.divIcon({
+
+                    className: "",
+
+                    html: `
+
+                        <div style="
+                            width:18px;
+                            height:18px;
+                            background:${color};
+                            border:3px solid white;
+                            border-radius:50%;
+                            box-shadow:0 2px 6px rgba(0,0,0,0.4);
+                        "></div>
+
+                    `,
+
+                    iconSize: [
+                        24,
+                        24
+                    ],
+
+                    iconAnchor: [
+                        12,
+                        12
+                    ],
+
+                    popupAnchor: [
+                        0,
+                        -12
+                    ]
+
+                });
+
+
+            const marker =
+                L.marker(
+                    [
+                        farm.latitude,
+                        farm.longitude
+                    ],
+                    {
+                        icon: icon
+                    }
+                );
+
+
+            marker.bindPopup(
+                createPopup(farm)
+            );
+
+
+            farmMarkers.push({
+
+                farm: farm,
+
+                marker: marker
+
+            });
+
+        }
+    );
+
+
+    // =========================================
+    // UPDATE MAP
+    // =========================================
+
+    function updateMap() {
+
+        const search =
+            document
+                .getElementById(
+                    "farm-search"
+                )
+                .value
+                .toLowerCase()
+                .trim();
+
+
+        const municipality =
+            document
+                .getElementById(
+                    "municipality-filter"
+                )
+                .value;
+
+
+        const farmType =
+            document
+                .getElementById(
+                    "farm-type-filter"
+                )
+                .value;
+
+
+        const visibleMarkers = [];
+
+
+        farmMarkers.forEach(
+            function(item) {
+
+                const farm =
+                    item.farm;
+
+
+                const searchText = [
+
+                    farm.name,
+
+                    farm.farmer,
+
+                    farm.barangay,
+
+                    farm.municipality
+
+                ]
+                .join(" ")
+                .toLowerCase();
+
+
+                const matchesSearch =
+                    !search ||
+                    searchText.includes(
+                        search
+                    );
+
+
+                const matchesMunicipality =
+                    !municipality ||
+                    farm.municipality ===
+                        municipality;
+
+
+                const matchesFarmType =
+                    !farmType ||
+                    farm.farm_type ===
+                        farmType;
+
+
+                const visible =
+                    matchesSearch &&
+                    matchesMunicipality &&
+                    matchesFarmType;
+
+
+                if (visible) {
+
+                    if (
+                        !farmMap.hasLayer(
+                            item.marker
+                        )
+                    ) {
+
+                        item.marker.addTo(
+                            farmMap
+                        );
+
+                    }
+
+
+                    visibleMarkers.push(
+                        item.marker
+                    );
+
+                } else {
+
+                    if (
+                        farmMap.hasLayer(
+                            item.marker
+                        )
+                    ) {
+
+                        farmMap.removeLayer(
+                            item.marker
+                        );
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        // =====================================
+        // RESULT TEXT
+        // =====================================
+
+        const result =
+            document.getElementById(
+                "map-result"
+            );
+
+
+        if (farmData.length === 0) {
+
+            result.textContent =
+                "No registered farms available.";
+
+        } else {
+
+            result.textContent =
+                `Showing ${visibleMarkers.length} of ${farmData.length} registered farm(s).`;
+
+        }
+
+
+        // =====================================
+        // FIT MAP
+        // =====================================
+
+        if (
+            visibleMarkers.length > 0
+        ) {
+
+            const group =
+                L.featureGroup(
+                    visibleMarkers
+                );
+
+
+            farmMap.fitBounds(
+                group
+                    .getBounds()
+                    .pad(0.20)
+            );
+
+        } else {
+
+            farmMap.setView(
+                [
+                    10.8330461,
+                    122.7286463
+                ],
+                13
+            );
+
+        }
+
+    }
+
+
+    // =========================================
+    // SEARCH
+    // =========================================
+
+    document
+        .getElementById(
+            "farm-search"
+        )
+        .addEventListener(
+            "input",
+            updateMap
+        );
+
+
+    // =========================================
+    // MUNICIPALITY FILTER
+    // =========================================
+
+    document
+        .getElementById(
+            "municipality-filter"
+        )
+        .addEventListener(
+            "change",
+            updateMap
+        );
+
+
+    // =========================================
+    // FARM TYPE FILTER
+    // =========================================
+
+    document
+        .getElementById(
+            "farm-type-filter"
+        )
+        .addEventListener(
+            "change",
+            updateMap
+        );
+
+
+    // =========================================
+    // RESET
+    // =========================================
+
+    document
+        .getElementById(
+            "reset-filters"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                document
+                    .getElementById(
+                        "farm-search"
+                    )
+                    .value = "";
+
+
+                document
+                    .getElementById(
+                        "municipality-filter"
+                    )
+                    .value = "";
+
+
+                document
+                    .getElementById(
+                        "farm-type-filter"
+                    )
+                    .value = "";
+
+
+                updateMap();
+
+            }
+        );
+
+
+    // =========================================
+    // LEGEND
+    // =========================================
+
+    const legend =
+        L.control({
+            position: "bottomright"
+        });
+
+
+    legend.onAdd =
+        function() {
+
+            const div =
+                L.DomUtil.create(
+                    "div",
+                    "map-legend"
+                );
+
+
+            div.innerHTML = `
+
+                <div class="legend-title">
+                    Farm Type
+                </div>
+
+                <div class="legend-item">
+
+                    <span
+                        class="legend-marker legend-fishpond">
+                    </span>
+
+                    Fishpond
+
+                </div>
+
+                <div class="legend-item">
+
+                    <span
+                        class="legend-marker legend-fishcage">
+                    </span>
+
+                    Fish Cage
+
+                </div>
+
+                <div class="legend-item">
+
+                    <span
+                        class="legend-marker legend-fishpen">
+                    </span>
+
+                    Fish Pen
+
+                </div>
+
+                <div class="legend-item">
+
+                    <span
+                        class="legend-marker legend-other">
+                    </span>
+
+                    Other
+
+                </div>
+
+            `;
+
+
+            return div;
+
+        };
+
+
+    legend.addTo(farmMap);
+
+
+    // =========================================
+    // INITIALIZE
+    // =========================================
+
+    updateMap();
+
+</script>
+
+{% endblock %}

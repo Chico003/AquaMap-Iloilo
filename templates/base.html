@@ -1,0 +1,516 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+            AquaMap Iloilo
+        {% endblock %}
+    </title>
+
+    <!-- =====================================================
+         GOOGLE FONT
+         ===================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- =====================================================
+         MAIN STYLESHEET
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+
+<body>
+
+<div class="aquamap-app">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="aquamap-header">
+
+        <div class="header-inner">
+
+            <!-- BRAND -->
+
+            <a
+                href="{% url 'home' %}"
+                class="aquamap-brand"
+            >
+
+                <span class="brand-mark">
+                    A
+                </span>
+
+                <span class="brand-text">
+
+                    <span class="brand-name">
+                        AquaMap
+                    </span>
+
+                    <span class="brand-location">
+                        ILOILO
+                    </span>
+
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 DESKTOP NAVIGATION
+                 ================================================= -->
+
+            <nav class="aquamap-nav">
+
+                {% if user.is_authenticated %}
+
+                    {% if user.profile.role == "MUNICIPAL" %}
+
+                        <a
+                            href="{% url 'municipal_dashboard' %}"
+                            class="nav-link"
+                        >
+                            Dashboard
+                        </a>
+
+                        <a
+                            href="{% url 'farmer_list' %}"
+                            class="nav-link"
+                        >
+                            Farmers
+                        </a>
+
+                        <a
+                            href="{% url 'farm_list' %}"
+                            class="nav-link"
+                        >
+                            Farms
+                        </a>
+
+                        <a
+                            href="{% url 'production_list' %}"
+                            class="nav-link"
+                        >
+                            Production
+                        </a>
+
+                        <a
+                            href="{% url 'municipal_dashboard' %}"
+                            class="nav-link"
+                        >
+                            Reports
+                        </a>
+
+                    {% elif user.profile.role == "BFAR" %}
+
+                        <a
+                            href="{% url 'bfar_dashboard' %}"
+                            class="nav-link"
+                        >
+                            Dashboard
+                        </a>
+
+                        <a
+                            href="{% url 'bfar_dashboard' %}"
+                            class="nav-link"
+                        >
+                            Aquaculture Map
+                        </a>
+
+                        <a
+                            href="{% url 'bfar_farm_inventory_csv' %}"
+                            class="nav-link"
+                        >
+                            Reports
+                        </a>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="nav-link"
+                    >
+                        Overview
+                    </a>
+
+                {% endif %}
+
+            </nav>
+
+
+            <!-- =================================================
+                 HEADER ACTIONS
+                 ================================================= -->
+
+            <div class="header-actions">
+
+                {% if user.is_authenticated %}
+
+                    <div class="user-summary">
+
+                        <span class="user-avatar">
+                            {{ user.username|first|upper }}
+                        </span>
+
+                        <span class="user-details">
+
+                            <span class="user-name">
+                                {{ user.username }}
+                            </span>
+
+                            {% if user.profile.role == "MUNICIPAL" %}
+
+                                <span class="user-role">
+                                    Municipal Agriculture Office
+                                </span>
+
+                            {% elif user.profile.role == "BFAR" %}
+
+                                <span class="user-role">
+                                    BFAR Region VI
+                                </span>
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <form
+                        method="post"
+                        action="{% url 'logout' %}"
+                        class="logout-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="logout-button"
+                        >
+                            Logout
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="header-login-button"
+                    >
+                        Sign In
+                    </a>
+
+                {% endif %}
+
+
+                <!-- MOBILE BUTTON -->
+
+                <button
+                    type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                >
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MOBILE NAVIGATION
+         ===================================================== -->
+
+    <div
+        class="mobile-navigation"
+        id="mobileNavigation"
+    >
+
+        <nav>
+
+            {% if user.is_authenticated %}
+
+                {% if user.profile.role == "MUNICIPAL" %}
+
+                    <a
+                        href="{% url 'municipal_dashboard' %}"
+                        class="mobile-nav-link"
+                    >
+                        Dashboard
+                    </a>
+
+                    <a
+                        href="{% url 'farmer_list' %}"
+                        class="mobile-nav-link"
+                    >
+                        Farmers
+                    </a>
+
+                    <a
+                        href="{% url 'farm_list' %}"
+                        class="mobile-nav-link"
+                    >
+                        Farms
+                    </a>
+
+                    <a
+                        href="{% url 'production_list' %}"
+                        class="mobile-nav-link"
+                    >
+                        Production
+                    </a>
+
+                    <a
+                        href="{% url 'municipal_dashboard' %}"
+                        class="mobile-nav-link"
+                    >
+                        Reports
+                    </a>
+
+                {% elif user.profile.role == "BFAR" %}
+
+                    <a
+                        href="{% url 'bfar_dashboard' %}"
+                        class="mobile-nav-link"
+                    >
+                        Dashboard
+                    </a>
+
+                    <a
+                        href="{% url 'bfar_dashboard' %}"
+                        class="mobile-nav-link"
+                    >
+                        Aquaculture Map
+                    </a>
+
+                    <a
+                        href="{% url 'bfar_farm_inventory_csv' %}"
+                        class="mobile-nav-link"
+                    >
+                        Reports
+                    </a>
+
+                {% endif %}
+
+
+                <div class="mobile-user-section">
+
+                    <div class="mobile-user-name">
+                        {{ user.username }}
+                    </div>
+
+                    {% if user.profile.role == "MUNICIPAL" %}
+
+                        <div class="mobile-user-role">
+                            Municipal Agriculture Office
+                        </div>
+
+                    {% elif user.profile.role == "BFAR" %}
+
+                        <div class="mobile-user-role">
+                            BFAR Region VI
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <form
+                    method="post"
+                    action="{% url 'logout' %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="mobile-logout-button"
+                    >
+                        Logout
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a
+                    href="{% url 'home' %}"
+                    class="mobile-nav-link"
+                >
+                    Overview
+                </a>
+
+                <a
+                    href="{% url 'login' %}"
+                    class="mobile-nav-link"
+                >
+                    Sign In
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="aquamap-main">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="aquamap-footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+
+                <strong>
+                    AquaMap Iloilo
+                </strong>
+
+                <span>
+                    Geospatial Aquaculture Inventory
+                    and Production Management
+                </span>
+
+            </div>
+
+
+            <div class="footer-meta">
+
+                <span>
+                    Iloilo, Philippines
+                </span>
+
+                <span>
+                    •
+                </span>
+
+                <span>
+                    AquaMap Platform
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<!-- =========================================================
+     MOBILE MENU SCRIPT
+     ========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const button =
+            document.getElementById(
+                "mobileMenuButton"
+            );
+
+        const navigation =
+            document.getElementById(
+                "mobileNavigation"
+            );
+
+
+        if (!button || !navigation) {
+            return;
+        }
+
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const open =
+                    navigation.classList.toggle(
+                        "is-open"
+                    );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    open ? "true" : "false"
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+
+{% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,1059 @@
+{% extends "system_base.html" %}
+
+{% block title %}
+    Farms | AquaMap Iloilo
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    /* =========================================================
+       FARMS PAGE
+       ========================================================= */
+
+    .farms-page {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 34px 28px 50px;
+    }
+
+
+    /* =========================================================
+       PAGE HEADER
+       ========================================================= */
+
+    .farms-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        gap: 25px;
+
+        margin-bottom: 28px;
+    }
+
+
+    .farms-heading {
+        min-width: 0;
+    }
+
+
+    .farms-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        margin-bottom: 10px;
+
+        padding: 7px 12px;
+
+        border-radius: 999px;
+
+        background:
+            rgba(22, 138, 138, 0.08);
+
+        border:
+            1px solid rgba(22, 138, 138, 0.14);
+
+        color: #0F5B66;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+
+    .farms-eyebrow-dot {
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #168A8A;
+
+        box-shadow:
+            0 0 0 4px rgba(22,138,138,0.10);
+    }
+
+
+    .farms-heading h1 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: clamp(28px, 4vw, 40px);
+
+        line-height: 1.1;
+
+        letter-spacing: -0.04em;
+    }
+
+
+    .farms-heading p {
+        margin: 10px 0 0;
+
+        color: #64748B;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       HEADER ACTIONS
+       ========================================================= */
+
+    .farms-header-actions {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        flex-shrink: 0;
+    }
+
+
+    .farms-dashboard-button,
+    .farms-add-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        min-height: 44px;
+
+        padding: 0 16px;
+
+        border-radius: 14px;
+
+        text-decoration: none;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        transition:
+            transform .2s ease,
+            box-shadow .2s ease;
+    }
+
+
+    .farms-dashboard-button {
+        background:
+            rgba(255,255,255,0.72);
+
+        border:
+            1px solid rgba(255,255,255,0.95);
+
+        color: #475569;
+
+        box-shadow:
+            0 8px 22px rgba(15,23,42,0.05),
+            inset 0 1px 0 rgba(255,255,255,0.95);
+
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+
+    .farms-add-button {
+        background:
+            linear-gradient(
+                135deg,
+                #0F5B66,
+                #168A8A
+            );
+
+        color: white;
+
+        box-shadow:
+            0 9px 22px rgba(15,91,102,0.20);
+    }
+
+
+    .farms-dashboard-button:hover,
+    .farms-add-button:hover {
+        transform: translateY(-2px);
+    }
+
+
+    .farms-dashboard-button:hover {
+        box-shadow:
+            0 12px 27px rgba(15,23,42,0.08),
+            inset 0 1px 0 rgba(255,255,255,0.95);
+    }
+
+
+    .farms-add-button:hover {
+        box-shadow:
+            0 13px 28px rgba(15,91,102,0.26);
+    }
+
+
+    .farms-add-icon {
+        font-size: 17px;
+        line-height: 1;
+    }
+
+
+    /* =========================================================
+       MESSAGES
+       ========================================================= */
+
+    .farms-messages {
+        margin-bottom: 18px;
+    }
+
+
+    .farms-alert {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 9px;
+
+        padding: 13px 16px;
+
+        border-radius: 15px;
+
+        background:
+            rgba(25,135,84,0.08);
+
+        border:
+            1px solid rgba(25,135,84,0.14);
+
+        color: #166534;
+
+        font-size: 12px;
+        font-weight: 600;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+
+    .farms-alert:last-child {
+        margin-bottom: 0;
+    }
+
+
+    .farms-alert-icon {
+        display: grid;
+        place-items: center;
+
+        width: 25px;
+        height: 25px;
+
+        flex-shrink: 0;
+
+        border-radius: 50%;
+
+        background:
+            rgba(25,135,84,0.12);
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       INVENTORY PANEL
+       ========================================================= */
+
+    .farms-panel {
+        overflow: hidden;
+
+        border-radius: 24px;
+
+        background:
+            rgba(255,255,255,0.78);
+
+        border:
+            1px solid rgba(255,255,255,0.94);
+
+        box-shadow:
+            0 15px 40px rgba(15,23,42,0.065),
+            inset 0 1px 0 rgba(255,255,255,0.96);
+
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+    }
+
+
+    /* =========================================================
+       PANEL HEADER
+       ========================================================= */
+
+    .farms-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 20px;
+
+        padding: 20px 22px;
+
+        border-bottom:
+            1px solid rgba(148,163,184,0.12);
+    }
+
+
+    .farms-panel-title {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+
+    .farms-panel-icon {
+        display: grid;
+        place-items: center;
+
+        width: 38px;
+        height: 38px;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #E6F4F7,
+                #D8F1F2
+            );
+
+        color: #0F5B66;
+
+        font-size: 17px;
+    }
+
+
+    .farms-panel-title h2 {
+        margin: 0;
+
+        color: #0F172A;
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+
+    .farms-panel-title span {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #94A3B8;
+
+        font-size: 10px;
+    }
+
+
+    .farms-count {
+        padding: 7px 10px;
+
+        border-radius: 999px;
+
+        background:
+            rgba(15,91,102,0.07);
+
+        color: #0F5B66;
+
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+
+    /* =========================================================
+       TABLE
+       ========================================================= */
+
+    .farms-table-wrapper {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    .farms-table {
+        width: 100%;
+
+        min-width: 950px;
+
+        border-collapse: collapse;
+    }
+
+
+    .farms-table th {
+        padding: 13px 18px;
+
+        background:
+            rgba(245,249,250,0.72);
+
+        color: #94A3B8;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+
+        text-align: left;
+
+        white-space: nowrap;
+    }
+
+
+    .farms-table td {
+        padding: 15px 18px;
+
+        border-top:
+            1px solid rgba(148,163,184,0.10);
+
+        color: #475569;
+
+        font-size: 12px;
+
+        vertical-align: middle;
+    }
+
+
+    .farms-table tbody tr {
+        transition:
+            background .18s ease;
+    }
+
+
+    .farms-table tbody tr:hover {
+        background:
+            rgba(230,244,247,0.42);
+    }
+
+
+    /* =========================================================
+       FARM DATA
+       ========================================================= */
+
+    .farm-name {
+        color: #0F172A;
+
+        font-weight: 800;
+    }
+
+
+    .farm-farmer {
+        color: #475569;
+
+        font-weight: 600;
+    }
+
+
+    .farm-municipality {
+        color: #0F5B66;
+
+        font-weight: 700;
+    }
+
+
+    .farm-barangay {
+        color: #64748B;
+    }
+
+
+    .farm-type {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 999px;
+
+        background:
+            rgba(37,99,235,0.07);
+
+        color: #2563EB;
+
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+
+    .farm-area {
+        color: #0F172A;
+
+        font-weight: 700;
+    }
+
+
+    .farm-area-unit {
+        color: #94A3B8;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+
+    .farm-actions {
+        display: flex;
+
+        align-items: center;
+
+        gap: 7px;
+    }
+
+
+    .farm-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 30px;
+
+        padding: 0 10px;
+
+        border-radius: 9px;
+
+        text-decoration: none;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        transition:
+            transform .18s ease,
+            box-shadow .18s ease;
+    }
+
+
+    .farm-action:hover {
+        transform: translateY(-1px);
+    }
+
+
+    .farm-edit {
+        background:
+            rgba(37,99,235,0.08);
+
+        border:
+            1px solid rgba(37,99,235,0.10);
+
+        color: #2563EB;
+    }
+
+
+    .farm-edit:hover {
+        box-shadow:
+            0 5px 12px rgba(37,99,235,0.10);
+    }
+
+
+    .farm-delete {
+        background:
+            rgba(220,53,69,0.08);
+
+        border:
+            1px solid rgba(220,53,69,0.10);
+
+        color: #DC3545;
+    }
+
+
+    .farm-delete:hover {
+        box-shadow:
+            0 5px 12px rgba(220,53,69,0.10);
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+       ========================================================= */
+
+    .farms-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        padding: 75px 25px;
+
+        text-align: center;
+    }
+
+
+    .farms-empty-icon {
+        display: grid;
+        place-items: center;
+
+        width: 68px;
+        height: 68px;
+
+        margin-bottom: 17px;
+
+        border-radius: 21px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #E6F4F7,
+                #F0F9FA
+            );
+
+        color: #0F5B66;
+
+        font-size: 27px;
+    }
+
+
+    .farms-empty h3 {
+        margin: 0 0 7px;
+
+        color: #0F172A;
+
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+
+    .farms-empty p {
+        max-width: 450px;
+
+        margin: 0;
+
+        color: #94A3B8;
+
+        font-size: 12px;
+
+        line-height: 1.6;
+    }
+
+
+    .farms-empty a {
+        display: inline-flex;
+
+        margin-top: 17px;
+
+        padding: 9px 13px;
+
+        border-radius: 10px;
+
+        background:
+            rgba(15,91,102,0.08);
+
+        color: #0F5B66;
+
+        text-decoration: none;
+
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 760px) {
+
+        .farms-page {
+            padding:
+                25px 16px 40px;
+        }
+
+
+        .farms-page-header {
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+
+        .farms-header-actions {
+            width: 100%;
+        }
+
+
+        .farms-dashboard-button,
+        .farms-add-button {
+            flex: 1;
+        }
+
+
+        .farms-panel-header {
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+
+        .farms-count {
+            align-self: flex-start;
+        }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+        .farms-heading h1 {
+            font-size: 30px;
+        }
+
+
+        .farms-header-actions {
+            flex-direction: column;
+        }
+
+
+        .farms-dashboard-button,
+        .farms-add-button {
+            width: 100%;
+
+            flex: none;
+        }
+
+
+        .farms-panel {
+            border-radius: 20px;
+        }
+
+
+        .farms-panel-header {
+            padding: 17px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="farms-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <section class="farms-page-header">
+
+
+        <div class="farms-heading">
+
+
+            <div class="farms-eyebrow">
+
+                <span class="farms-eyebrow-dot"></span>
+
+                Geospatial Farm Inventory
+
+            </div>
+
+
+            <h1>
+                Farm Inventory
+            </h1>
+
+
+            <p>
+                Manage registered aquaculture farms,
+                locations, types, and production areas.
+            </p>
+
+
+        </div>
+
+
+        <div class="farms-header-actions">
+
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="farms-dashboard-button"
+            >
+                ← Dashboard
+            </a>
+
+
+            <a
+                href="{% url 'farm_create' %}"
+                class="farms-add-button"
+            >
+
+                <span class="farms-add-icon">
+                    +
+                </span>
+
+                Add Farm
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         MESSAGES
+         ===================================================== -->
+
+    {% if messages %}
+
+        <div class="farms-messages">
+
+            {% for message in messages %}
+
+                <div class="farms-alert">
+
+                    <span class="farms-alert-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        {{ message }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         FARM INVENTORY
+         ===================================================== -->
+
+    <section class="farms-panel">
+
+
+        <div class="farms-panel-header">
+
+
+            <div class="farms-panel-title">
+
+                <span class="farms-panel-icon">
+                    🗺️
+                </span>
+
+
+                <div>
+
+                    <h2>
+                        Registered Farms
+                    </h2>
+
+                    <span>
+                        Aquaculture farm locations within your authorized scope
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            {% if farms %}
+
+                <span class="farms-count">
+
+                    {{ farms|length }} farm{{ farms|length|pluralize }}
+
+                </span>
+
+            {% endif %}
+
+
+        </div>
+
+
+        {% if farms %}
+
+
+            <div class="farms-table-wrapper">
+
+
+                <table class="farms-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Farm
+                            </th>
+
+                            <th>
+                                Farmer
+                            </th>
+
+                            <th>
+                                Municipality
+                            </th>
+
+                            <th>
+                                Barangay
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Area
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for farm in farms %}
+
+
+                            <tr>
+
+
+                                <td class="farm-name">
+                                    {{ farm.farm_name }}
+                                </td>
+
+
+                                <td class="farm-farmer">
+                                    {{ farm.farmer }}
+                                </td>
+
+
+                                <td class="farm-municipality">
+                                    {{ farm.municipality }}
+                                </td>
+
+
+                                <td class="farm-barangay">
+                                    {{ farm.barangay }}
+                                </td>
+
+
+                                <td>
+
+                                    <span class="farm-type">
+
+                                        {{ farm.get_farm_type_display }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <td class="farm-area">
+
+                                    {{ farm.area }}
+
+                                    <span class="farm-area-unit">
+                                        ha
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+
+                                    <div class="farm-actions">
+
+
+                                        <a
+                                            href="{% url 'farm_edit' farm.pk %}"
+                                            class="farm-action farm-edit"
+                                        >
+                                            Edit
+                                        </a>
+
+
+                                        <a
+                                            href="{% url 'farm_delete' farm.pk %}"
+                                            class="farm-action farm-delete"
+                                        >
+                                            Delete
+                                        </a>
+
+
+                                    </div>
+
+
+                                </td>
+
+
+                            </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="farms-empty">
+
+
+                <div class="farms-empty-icon">
+                    🗺️
+                </div>
+
+
+                <h3>
+                    No farms registered yet.
+                </h3>
+
+
+                <p>
+                    Add your first aquaculture farm to begin
+                    building the municipality's geospatial inventory.
+                </p>
+
+
+                <a href="{% url 'farm_create' %}">
+                    + Add the first farm
+                </a>
+
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}

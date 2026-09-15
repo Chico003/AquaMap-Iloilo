@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete Farm | AquaMap Iloilo
+{% endblock %}
+
+{% block content %}
+
+<div style="
+    min-height: 100vh;
+    padding: 60px 20px;
+    background: #f4f7f6;
+">
+
+    <div style="
+        max-width: 550px;
+        margin: auto;
+        background: white;
+        padding: 35px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    ">
+
+        <h1>
+            Delete Farm
+        </h1>
+
+        <p style="color: #666;">
+            Are you sure you want to delete:
+        </p>
+
+        <h3>
+            {{ farm.farm_name }}
+        </h3>
+
+        <p style="color: #777;">
+            {{ farm.farmer }} —
+            {{ farm.municipality }},
+            {{ farm.barangay }}
+        </p>
+
+
+        <form method="post"
+              style="margin-top: 30px;">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    style="
+                        padding: 11px 22px;
+                        border: none;
+                        background: #dc3545;
+                        color: white;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        margin-right: 8px;
+                    ">
+                Yes, Delete
+            </button>
+
+            <a href="{% url 'farm_list' %}"
+               style="
+                   padding: 11px 22px;
+                   background: #e9ecef;
+                   color: #333;
+                   text-decoration: none;
+                   border-radius: 6px;
+               ">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

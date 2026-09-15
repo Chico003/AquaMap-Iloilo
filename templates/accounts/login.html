@@ -1,0 +1,1233 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Sign In | AquaMap Iloilo
+{% endblock %}
+
+
+{% block content %}
+
+<div class="login-page">
+
+    <div class="login-container">
+
+        <!-- =================================================
+             LEFT SIDE — BRAND / INFORMATION
+             ================================================= -->
+
+        <section class="login-intro">
+
+            <div class="login-intro-content">
+
+                <div class="login-eyebrow">
+                    AQUAMAP ILOILO
+                </div>
+
+                <h1>
+                    Aquaculture
+                    <span>Intelligence.</span>
+                </h1>
+
+                <p>
+                    A centralized geospatial platform for
+                    aquaculture inventory, farm mapping,
+                    and production management across Iloilo.
+                </p>
+
+
+                <div class="login-features">
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            MAP
+                        </div>
+
+                        <div>
+                            <strong>
+                                Geospatial Mapping
+                            </strong>
+
+                            <span>
+                                Visualize aquaculture farms
+                                across participating municipalities.
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            DATA
+                        </div>
+
+                        <div>
+                            <strong>
+                                Centralized Records
+                            </strong>
+
+                            <span>
+                                Manage farmer, farm, and
+                                production information in one place.
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            AI
+                        </div>
+
+                        <div>
+                            <strong>
+                                Better Decisions
+                            </strong>
+
+                            <span>
+                                Turn aquaculture data into
+                                meaningful management insights.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Decorative map -->
+
+            <div class="login-map-decoration">
+
+                <div class="login-map-grid"></div>
+
+                <div class="login-map-line line-one"></div>
+                <div class="login-map-line line-two"></div>
+                <div class="login-map-line line-three"></div>
+
+                <div class="login-map-point point-one"></div>
+                <div class="login-map-point point-two"></div>
+                <div class="login-map-point point-three"></div>
+                <div class="login-map-point point-four"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RIGHT SIDE — LOGIN FORM
+             ================================================= -->
+
+        <section class="login-card-wrapper">
+
+            <div class="login-card">
+
+                <div class="login-card-header">
+
+                    <div class="login-icon">
+                        A
+                    </div>
+
+                    <div>
+
+                        <div class="login-small-title">
+                            SECURE ACCESS
+                        </div>
+
+                        <h2>
+                            Welcome back
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <p class="login-description">
+                    Sign in to access the AquaMap Iloilo
+                    management platform.
+                </p>
+
+
+                {% if form.errors %}
+
+                    <div class="login-error">
+
+                        <strong>
+                            Unable to sign in
+                        </strong>
+
+                        <span>
+                            Please check your username and
+                            password and try again.
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+
+                <form
+                    method="post"
+                    class="login-form"
+                >
+
+                    {% csrf_token %}
+
+
+                    <!-- USERNAME -->
+
+                    <div class="login-field">
+
+                        <label for="id_username">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            name="username"
+                            id="id_username"
+                            autocomplete="username"
+                            placeholder="Enter your username"
+                            required
+                            autofocus
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="login-field">
+
+                        <label for="id_password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="id_password"
+                            autocomplete="current-password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="login-submit"
+                    >
+
+                        <span>
+                            Sign In
+                        </span>
+
+                        <span class="login-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <div class="login-security">
+
+                    <span class="security-dot"></span>
+
+                    <span>
+                        Authorized users only
+                    </span>
+
+                </div>
+
+
+                <div class="login-footer-note">
+
+                    AquaMap Iloilo
+
+                    <span>•</span>
+
+                    Geospatial Aquaculture
+                    Management Platform
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
+.login-page {
+
+    min-height: calc(100vh - 150px);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 55px 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5f9fa 0%,
+            #eef8fa 50%,
+            #f8fbfc 100%
+        );
+}
+
+
+.login-container {
+
+    width: 100%;
+
+    max-width: 1180px;
+
+    min-height: 650px;
+
+    display: grid;
+
+    grid-template-columns: 1.05fr 0.95fr;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.9);
+
+    border-radius: 30px;
+
+    background:
+        rgba(255, 255, 255, 0.72);
+
+    box-shadow:
+        0 30px 80px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+    backdrop-filter: blur(24px);
+
+    -webkit-backdrop-filter: blur(24px);
+}
+
+
+/* =========================================================
+   LEFT INTRODUCTION
+   ========================================================= */
+
+.login-intro {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 70px 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0f5b66 0%,
+            #11737a 48%,
+            #168a8a 100%
+        );
+
+    color: #ffffff;
+}
+
+
+.login-intro::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+
+    height: 420px;
+
+    right: -170px;
+
+    top: -180px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+}
+
+
+.login-intro::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+
+    height: 300px;
+
+    left: -150px;
+
+    bottom: -150px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.login-intro-content {
+
+    position: relative;
+
+    z-index: 3;
+
+    max-width: 490px;
+}
+
+
+.login-eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 7px 12px;
+
+    margin-bottom: 25px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.18);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.09);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.login-intro h1 {
+
+    margin: 0;
+
+    font-size: clamp(42px, 5vw, 66px);
+
+    line-height: 0.98;
+
+    letter-spacing: -3px;
+
+    font-weight: 800;
+}
+
+
+.login-intro h1 span {
+
+    display: block;
+
+    color: #bceff0;
+}
+
+
+.login-intro > .login-intro-content > p {
+
+    max-width: 450px;
+
+    margin: 28px 0 40px;
+
+    color:
+        rgba(255, 255, 255, 0.76);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   LOGIN FEATURES
+   ========================================================= */
+
+.login-features {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 17px;
+}
+
+
+.login-feature {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+}
+
+
+.login-feature-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    color: #d9ffff;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+}
+
+
+.login-feature strong {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+.login-feature span {
+
+    display: block;
+
+    color:
+        rgba(255, 255, 255, 0.60);
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DECORATIVE MAP
+   ========================================================= */
+
+.login-map-decoration {
+
+    position: absolute;
+
+    right: -50px;
+
+    bottom: -20px;
+
+    width: 390px;
+
+    height: 250px;
+
+    opacity: 0.75;
+
+    pointer-events: none;
+}
+
+
+.login-map-grid {
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.08) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.08) 1px,
+            transparent 1px
+        );
+
+    background-size: 32px 32px;
+
+    transform:
+        perspective(350px)
+        rotateX(45deg)
+        rotateZ(-8deg);
+
+    transform-origin: center;
+}
+
+
+.login-map-line {
+
+    position: absolute;
+
+    height: 1px;
+
+    background:
+        rgba(183, 247, 247, 0.35);
+
+    transform-origin: left center;
+}
+
+
+.line-one {
+
+    width: 260px;
+
+    left: 40px;
+
+    top: 105px;
+
+    transform: rotate(-12deg);
+}
+
+
+.line-two {
+
+    width: 300px;
+
+    left: 20px;
+
+    top: 160px;
+
+    transform: rotate(10deg);
+}
+
+
+.line-three {
+
+    width: 220px;
+
+    left: 100px;
+
+    top: 65px;
+
+    transform: rotate(27deg);
+}
+
+
+.login-map-point {
+
+    position: absolute;
+
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #b9ffff;
+
+    box-shadow:
+        0 0 0 5px rgba(185, 255, 255, 0.10),
+        0 0 20px rgba(185, 255, 255, 0.45);
+}
+
+
+.point-one {
+
+    left: 100px;
+
+    top: 95px;
+}
+
+
+.point-two {
+
+    left: 235px;
+
+    top: 125px;
+}
+
+
+.point-three {
+
+    left: 170px;
+
+    top: 190px;
+}
+
+
+.point-four {
+
+    left: 310px;
+
+    top: 75px;
+}
+
+
+/* =========================================================
+   RIGHT LOGIN AREA
+   ========================================================= */
+
+.login-card-wrapper {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 55px;
+}
+
+
+.login-card {
+
+    width: 100%;
+
+    max-width: 400px;
+}
+
+
+/* =========================================================
+   LOGIN CARD HEADER
+   ========================================================= */
+
+.login-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 17px;
+}
+
+
+.login-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0f5b66,
+            #168a8a
+        );
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 12px 25px rgba(15, 91, 102, 0.16);
+}
+
+
+.login-small-title {
+
+    margin-bottom: 4px;
+
+    color: #168a8a;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.login-card h2 {
+
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 28px;
+
+    line-height: 1.1;
+
+    letter-spacing: -1px;
+
+    font-weight: 800;
+}
+
+
+.login-description {
+
+    margin: 0 0 30px;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+
+.login-error {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    margin-bottom: 22px;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid rgba(220, 53, 69, 0.14);
+
+    border-radius: 12px;
+
+    background:
+        rgba(220, 53, 69, 0.05);
+
+    color: #dc3545;
+}
+
+
+.login-error strong {
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+.login-error span {
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.login-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.login-field {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.login-field label {
+
+    color: #334155;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.login-field input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    min-height: 48px;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid #dce5e8;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background:
+        rgba(248, 250, 252, 0.75);
+
+    color: #0f172a;
+
+    font-family:
+        "Plus Jakarta Sans",
+        sans-serif;
+
+    font-size: 11px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.login-field input::placeholder {
+
+    color: #94a3b8;
+}
+
+
+.login-field input:focus {
+
+    border-color: #168a8a;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(22, 138, 138, 0.08);
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.login-submit {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 4px;
+
+    padding: 12px 15px 12px 19px;
+
+    border: 0;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f5b66,
+            #168a8a
+        );
+
+    color: #ffffff;
+
+    font-family:
+        "Plus Jakarta Sans",
+        sans-serif;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 12px 25px rgba(15, 91, 102, 0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.login-submit:hover {
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 16px 30px rgba(15, 91, 102, 0.22);
+}
+
+
+.login-submit:active {
+
+    transform:
+        translateY(0);
+}
+
+
+.login-arrow {
+
+    width: 27px;
+
+    height: 27px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.login-security {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 25px;
+
+    color: #64748b;
+
+    font-size: 8px;
+}
+
+
+.security-dot {
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #198754;
+
+    box-shadow:
+        0 0 0 4px rgba(25, 135, 84, 0.08);
+}
+
+
+/* =========================================================
+   FOOT NOTE
+   ========================================================= */
+
+.login-footer-note {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: 30px;
+
+    color: #94a3b8;
+
+    font-size: 7px;
+
+    text-align: center;
+
+    line-height: 1.5;
+}
+
+
+.login-footer-note span {
+
+    color: #cbd5e1;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .login-container {
+
+        grid-template-columns: 1fr;
+
+        max-width: 620px;
+    }
+
+
+    .login-intro {
+
+        min-height: 400px;
+
+        padding: 50px;
+    }
+
+
+    .login-intro h1 {
+
+        font-size: 48px;
+    }
+
+
+    .login-card-wrapper {
+
+        padding: 50px;
+    }
+
+
+    .login-map-decoration {
+
+        opacity: 0.45;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .login-page {
+
+        padding: 25px 14px;
+    }
+
+
+    .login-container {
+
+        border-radius: 22px;
+    }
+
+
+    .login-intro {
+
+        min-height: auto;
+
+        padding: 40px 28px;
+    }
+
+
+    .login-intro h1 {
+
+        font-size: 40px;
+
+        letter-spacing: -2px;
+    }
+
+
+    .login-intro > .login-intro-content > p {
+
+        font-size: 11px;
+
+        margin: 20px 0 28px;
+    }
+
+
+    .login-feature span {
+
+        font-size: 8px;
+    }
+
+
+    .login-card-wrapper {
+
+        padding: 38px 25px;
+    }
+
+
+    .login-card h2 {
+
+        font-size: 24px;
+    }
+
+
+    .login-map-decoration {
+
+        display: none;
+    }
+
+}
+
+</style>
+
+{% endblock %}
