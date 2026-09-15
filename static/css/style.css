@@ -3229,3 +3229,305 @@ button {
     }
 
 }
+
+/* =========================================================
+   FINAL RESPONSIVE PUBLIC HEADER FIX
+   ========================================================= */
+
+/* Prevent horizontal overflow */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   PUBLIC HEADER — DESKTOP
+   ========================================================= */
+
+.aquamap-header {
+    width: calc(100% - 32px);
+}
+
+.header-inner {
+    width: calc(100% - 32px);
+
+    max-width: 1450px;
+
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.aquamap-brand {
+    flex: 0 0 auto;
+}
+
+.aquamap-nav {
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+}
+
+.header-actions {
+    flex: 0 0 auto;
+
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .aquamap-header {
+        width: calc(100% - 24px);
+    }
+
+    .header-inner {
+        width: calc(100% - 24px);
+
+        min-height: 64px;
+
+        gap: 12px;
+    }
+
+    /* Hide desktop navigation */
+    .aquamap-nav {
+        display: none;
+    }
+
+    /* Header actions stay on the RIGHT */
+    .header-actions {
+        margin-left: auto;
+
+        justify-content: flex-end;
+    }
+
+    /* Hamburger appears on the right */
+    .mobile-menu-button {
+        display: flex;
+
+        flex: 0 0 38px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 750px) {
+
+    .aquamap-header {
+        position: sticky;
+
+        top: 8px;
+
+        width: calc(100% - 20px);
+
+        margin: 8px auto 0;
+
+        border-radius: 16px;
+    }
+
+    .header-inner {
+        width: calc(100% - 20px);
+
+        min-height: 60px;
+
+        padding: 0;
+
+        gap: 8px;
+    }
+
+
+    /* Brand stays on the LEFT */
+    .aquamap-brand {
+        flex: 0 1 auto;
+
+        min-width: 0;
+    }
+
+
+    /* Sign-in button is removed from the desktop header */
+    .header-login-button {
+        display: none;
+    }
+
+
+    /* Logged-in desktop user information is hidden */
+    .user-summary {
+        display: none;
+    }
+
+
+    /* Desktop logout is hidden */
+    .logout-form {
+        display: none;
+    }
+
+
+    /* Actions occupy only the space they need */
+    .header-actions {
+        flex: 0 0 auto;
+
+        width: auto;
+
+        margin-left: auto;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-end;
+    }
+
+
+    /* Hamburger stays at the FAR RIGHT */
+    .mobile-menu-button {
+        display: flex;
+
+        flex: 0 0 38px;
+
+        width: 38px;
+        height: 38px;
+
+        margin: 0;
+    }
+
+
+    /* Mobile navigation fits viewport */
+    .mobile-navigation {
+        width: calc(100% - 20px);
+
+        max-width: none;
+
+        margin: 8px auto 0;
+
+        box-sizing: border-box;
+    }
+
+    .mobile-navigation nav {
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .aquamap-header {
+        width: calc(100% - 16px);
+
+        top: 6px;
+
+        margin-top: 6px;
+
+        border-radius: 14px;
+    }
+
+    .header-inner {
+        width: calc(100% - 16px);
+
+        min-height: 56px;
+    }
+
+
+    .brand-mark {
+        width: 34px;
+        height: 34px;
+
+        flex: 0 0 34px;
+    }
+
+    .brand-name {
+        font-size: 14px;
+
+        white-space: nowrap;
+    }
+
+    .brand-location {
+        font-size: 6px;
+    }
+
+
+    .mobile-menu-button {
+        width: 36px;
+        height: 36px;
+
+        flex: 0 0 36px;
+    }
+
+
+    .mobile-navigation {
+        width: calc(100% - 16px);
+
+        margin-top: 6px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .header-inner {
+        width: calc(100% - 12px);
+    }
+
+    .aquamap-header {
+        width: calc(100% - 12px);
+    }
+
+    .brand-mark {
+        width: 32px;
+        height: 32px;
+
+        flex-basis: 32px;
+    }
+
+    .brand-name {
+        font-size: 13px;
+    }
+
+    .brand-location {
+        font-size: 5px;
+    }
+
+    .mobile-menu-button {
+        width: 34px;
+        height: 34px;
+
+        flex-basis: 34px;
+    }
+
+}
